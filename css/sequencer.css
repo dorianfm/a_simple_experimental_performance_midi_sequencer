@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    padding: 0.5rem;
+    font-family: helvetica, sans-serif;
+    font-size: 10pt;
+}
+
+.controls {
+    display: flex;
+}
+
+input { 
+    margin: 0;
+}
+
+.track {
+    margin: 0.5rem 0;
+    border: 1px solid black;
+}
+
+.sequence {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.step {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.step:nth-child(1n) {
+    background-color: lightgrey;
+}
+
+.step:nth-child(2n) {
+    background-color: lightblue;
+}
+
+.step .values {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    column-gap: 0.5rem;
+    padding: 0.1rem 0.5rem;
+}
+
+
+.step .functions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    column-gap: 0.5rem;
+    padding: 0.1rem 0.5rem;
+}

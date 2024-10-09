@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Sequences</title>
+    <link rel="stylesheet" href="./css/sequencer.css"></link>
+</head>
+
+<body>
+    <div class="controls">
+        <input type="number" name="speed" min="10" max="100" step="1" value="20">
+        <button title="play">|&gt;</button>
+    </div>
+    <div class="tracks" id="tracks">
+        <div class="track">
+            <div class="details">
+                <select name="controller" class="controller"></select>
+                <select name="channel" classs="channel"></select>
+            </div>
+            <ol class="sequence">
+                <li class="step">
+                    <div class="values">
+                        <input type="checkbox" class="active" checked="checked" />
+                        <input type="range" title="note" class="note" min="0" max="127" value="60" />
+                        <input type="range" title="duration" class="duration" min="0" max="10" value="1" />
+                        <input type="range" title="length" class="length" min="0" max="10" value="5" />
+                    </div>
+                    <div class="functions">
+                        <button title="insert before" value="insert before">&lt;+</button>
+                        <button title="remove" value="remove">-</button>
+                        <button title="insert after" value="insert after">+&gt;</button>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+</body>
+<script src="./interface.js"></script>
+
+</html>
