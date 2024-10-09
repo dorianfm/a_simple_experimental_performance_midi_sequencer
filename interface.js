@@ -1,18 +1,39 @@
 
 let tracks = document.getElementById('tracks');
+let controls = document.getElementById('controls')l
 let step = document.querySelector('.step').cloneNode(true);
 
 tracks.addEventListener('click', trackClick);
+controls.addEventListener('click', controlClick);
 
-function trackClick(evt)
+function controlClick(evt)
 {
-    console.log(evt.srcElement.nodeName);
     if (evt.srcElement.nodeName == 'BUTTON') {
-        buttonClick(evt.srcElement.value, evt.srcElement);
+        controlButtonClick(evt.srcElement.value);
     }
 }
 
-function buttonClick(action, target)
+function controlButtonClick(action) 
+{
+    switch(action) {
+        case 'play':
+            controlTogglePlay();
+            break;
+    }
+}
+
+function controlTogglePlay() {
+
+}
+
+function trackClick(evt)
+{
+    if (evt.srcElement.nodeName == 'BUTTON') {
+        trackButtonClick(evt.srcElement.value, evt.srcElement);
+    }
+}
+
+function trackButtonClick(action, target)
 {
     let targetStep = target.closest('.step');
     switch(action) {
