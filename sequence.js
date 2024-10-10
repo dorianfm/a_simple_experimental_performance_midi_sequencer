@@ -1,3 +1,10 @@
+/* package.json
+  "dependencies": {
+    "easymidi": "^3.1.0",
+    "midi": "^2.0.0"
+  },
+  */
+
 const midi = require('midi');
 const easymidi = require('easymidi');
 
