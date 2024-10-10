@@ -1,6 +1,8 @@
 
 let tracks = document.getElementById('tracks');
 let controls = document.getElementById('controls');
+let defaultTrack = document.querySelector('.track').cloneNode(true);
+let defaultPattern = document.querySelector('.pattern').cloneNode(true);
 let defaultStep = document.querySelector('.step').cloneNode(true);
 
 tracks.addEventListener('click', trackClick);
@@ -29,42 +31,57 @@ function controlTogglePlay() {
 function trackClick(evt)
 {
     if (evt.srcElement.nodeName == 'BUTTON') {
-        trackButtonClick(evt.srcElement.value, evt.srcElement, evt);
+        buttonClick(evt.srcElement.value, evt.srcElement, evt);
     }
 }
 
-function trackButtonClick(action, target, evt)
+function buttonClick(action, button, evt)
 {
-    let targetStep = target.closest('.step');
-    let newStep = evt.getModifierState('Alt') == true ? targetStep : defaultStep; 
+    let target = button.closest('.step, .pattern, .track');
+    let targetClass = elementClass(target);
+    let newElement = evt.getModifierState('Alt') == true ? target : defaultFor(target); 
     switch(action) {
         case 'insert before':
-            insertStepBefore(targetStep, newStep);
+            insertBefore(target, newElement);
             break;
         case 'remove':
-            stepRemove(targetStep);
+            remove(target);
             break;
         case 'insert after':
-            insertStepAfter(targetStep, newStep);
+            insertAfter(target, newElement);
             break;
     }
 }
 
-function stepRemove(targetStep)
+function defaultFor(target) {
+    if (target.matches('.step')) return defaultStep;
+    if (target.matches('.pattern')) return defaultPattern; 
+    if (target.matches('.track')) return defaultTrack;
+}
+
+function elementClass(target) {
+    if (target.matches('.step')) return '.step';
+    if (target.matches('.pattern')) return '.pattern'; 
+    if (target.matches('.track')) return '.track';
+}
+
+function remove(target)
 {
-    let sequence = targetStep.closest('.steps');
-    let steps = sequence.querySelectorAll('.step');
-    console.log(steps);
-    if (sequence.querySelectorAll('.step').length <= 1) {
+    let targetClass = elementClass(target);
+    console.log(target, targetClass);
+    let containerClass = targetClass+'s';
+    let container = target.closest(containerClass);
+    let elements = container.querySelectorAll(targetClass);
+    if (elements.length <= 1) {
         return;
     }
-   sequence.removeChild(targetStep);
+    container.removeChild(target);
 }
 
-function insertStepBefore(targetStep, step) {
-    targetStep.before(step.cloneNode(true));
+function insertBefore(target, element) {
+    target.before(element.cloneNode(true));
 }
 
-function insertStepAfter(targetStep, step) {
-    targetStep.after(step.cloneNode(true));
+function insertAfter(target, element) {
+    target.after(element.cloneNode(true));
 }

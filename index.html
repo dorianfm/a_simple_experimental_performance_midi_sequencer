@@ -14,13 +14,16 @@
         <input type="number" name="stepInterval" min="10" max="100" step="1" value="20">
         <button title="play" value="play">I&gt;</button>
     </div>
-    <div class="tracks" id="tracks">
-        <div class="track">
+    <ol class="tracks" id="tracks">
+        <li class="track">
             <div class="functions">
                 <select name="controller" class="controller"></select>
                 <select name="channel" classs="channel"></select>
+                <button title="insert before" value="insert before">&lt;+</button>
+                <button title="remove" value="remove">-</button>
+                <button title="insert after" value="insert after">+&gt;</button>
             </div>
-            <ol class="sequence">
+            <ol class="patterns">
                 <li class="pattern">
                     <div class="handle"></div>
                     <ul class="steps">
@@ -46,8 +49,8 @@
                     </div>
                 </li>
             </ol>
-        </div>
-    </div>
+        </li>
+    </ol>
 
 </body>
 <script src="./interface.js"></script>

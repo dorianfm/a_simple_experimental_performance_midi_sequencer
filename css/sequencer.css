@@ -38,6 +38,15 @@ input[type="checkbox"] {
     height: 1rem;
 }
 
+.tracks {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
 .track {
     margin: 0.5rem 0;
     border: 1px solid var(--foreground);
@@ -49,7 +58,7 @@ input[type="checkbox"] {
     column-gap: 0.5rem;
 }
 
-.sequence {
+.patterns {
     margin: 0 0 -1px 0;
     padding: 0;
 }
