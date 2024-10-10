@@ -1,6 +1,6 @@
 
 let tracks = document.getElementById('tracks');
-let controls = document.getElementById('controls')l
+let controls = document.getElementById('controls');
 let step = document.querySelector('.step').cloneNode(true);
 
 tracks.addEventListener('click', trackClick);
