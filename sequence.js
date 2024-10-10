@@ -4,6 +4,15 @@ const easymidi = require('easymidi');
 let output = new easymidi.Output(getPortName());
 let lastnotetime = Date.now();
 
+// if step is not active we skip it
+
+// duration is how long many stepintervals until the next step
+
+// length is the gate duration of the noteon to noteoff, relative to the duration of the step 
+//      - a zero length means not noteon/noteoff, 100 means noteon but no noteoff (blends to next step, allows for slewing)
+
+// note is the note value sent
+
 let sequence = [
     {
         note: 35,
