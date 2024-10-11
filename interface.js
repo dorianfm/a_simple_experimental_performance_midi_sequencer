@@ -268,7 +268,6 @@ function updateState()
 
 function updateStateButtons()
 {
-    console.log([states.length, stateOffset]);
     if (states.length < 2 || stateOffset >= states.length - 1) {
         undoButton.disabled = true;
     } else {
