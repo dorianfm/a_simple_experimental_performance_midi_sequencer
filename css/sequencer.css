@@ -22,6 +22,39 @@ body {
     display: flex;
 }
 
+button,
+input,
+select,
+textarea { 
+    margin: 0;
+    border-radius: 0;
+    border: 1px solid var(--foreground);
+    color: var(--foreground);
+    background: none;
+    height: 1.25rem;
+}
+
+button:active,
+button:hover {
+    background: var(--foreground);
+    color: var(--background);
+}
+
+button:disabled {
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+/* *:focus {
+    outline: 1px solid hotpink;
+    --foreground: hotpink;
+} */
+
+input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+}
+
 .controls {
     display: flex;
     position: fixed;
@@ -34,36 +67,12 @@ body {
     height: 3rem;
     padding: 0.5rem;
     border-bottom: 3px solid var(--foreground);
+    justify-content: space-between;
 }
 
 
 
-button,
-input,
-select,
-textarea { 
-    margin: 0;
-    border-radius: 0;
-    border: 1px solid var(--foreground);
-    color: var(--foreground);
-    background: none;
-}
 
-button:active,
-button:hover {
-    background: var(--foreground);
-    color: var(--background);
-}
-
-/* *:focus {
-    outline: 1px solid hotpink;
-    --foreground: hotpink;
-} */
-
-input[type="checkbox"] {
-    width: 1rem;
-    height: 1rem;
-}
 
 .tracks {
     display: flex;
@@ -245,9 +254,14 @@ li.track::before {
 }
 
 .dragging {
-    opacity: 50%;
+    opacity: 15%;
+    /* display: none; */
 }
 
-.dragTarget {
-    background: yellow;
+.dragTargetAbove {
+    margin-top: 2rem;
+}
+
+.dragTargetBelow {
+    margin-bottom: 2rem;
 }

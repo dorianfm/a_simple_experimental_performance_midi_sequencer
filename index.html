@@ -5,35 +5,24 @@
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Sequences</title>
+    <title>Sequencer</title>
     <link rel="stylesheet" href="./css/sequencer.css"></link>
 </head>
 
 <body>
+<form id="project">
     <div id="controls" class="controls">
-        <input type="number" name="stepInterval" min="10" max="100" step="1" value="20">
-        <button title="play" value="play">I&gt;</button>
-        <datalist id="lengths">
-            <option value="0"></option>
-            <option value="5"></option>
-            <option value="10"></option>
-            <option value="15"></option>
-            <option value="20"></option>
-        </datalist>
-        <datalist id="durations">
-            <option value="0"></option>
-            <option value="25"></option>
-            <option value="50"></option>
-            <option value="75"></option>
-            <option value="100"></option>
-        </datalist>
-        <datalist id="notes">
-            <option value="0"></option>
-            <option value="32"></option>
-            <option value="64"></option>
-            <option value="96"></option>
-            <option value="127"></option>
-        </datalist>
+        <div class="play">
+            <input type="number" name="stepInterval" min="10" max="100" step="1" value="20">
+            <button title="play" value="play">&gt;</button>
+        </div>
+        <div class="project">
+            <input type="text" name="title">
+        </div>
+        <div class="history">
+            <button title="Undo" value="undo">&lArr;</button>
+            <button title="Redo" value="redo">&rArr;</button>
+        </div>
     </div>
     <ol class="tracks" id="tracks">
         <li class="track">
@@ -76,10 +65,10 @@
                         <li class="step">
                             <div class="handle"></div>
                             <div class="values">
-                                <input type="checkbox" class="active" checked="checked" />
-                                <input type="range" title="length" class="length" min="0" max="20" value="10" list="lengths"/>
-                                <input type="range" title="duration" class="duration" min="0" max="100" value="50" list="durations" />
-                                <input type="range" title="note" class="note" min="0" max="127" value="60" list="notes"/>
+                                <input type="checkbox" name="active" value="1" checked="checked" />
+                                <input type="range" title="Length" name="length" min="0" max="20" value="10" list="lengths"/>
+                                <input type="range" title="Duration" name="duration" min="0" max="100" value="50" list="durations" />
+                                <input type="range" title="Note" name="note" min="0" max="127" value="60" list="notes"/>
                             </div>
                             <div class="functions">
                                 <button title="remove" value="remove">-</button>
@@ -95,7 +84,28 @@
             </ol>
         </li>
     </ol>
-
+</form>
+<datalist id="lengths">
+    <option value="0"></option>
+    <option value="5"></option>
+    <option value="10"></option>
+    <option value="15"></option>
+    <option value="20"></option>
+</datalist>
+<datalist id="durations">
+    <option value="0"></option>
+    <option value="25"></option>
+    <option value="50"></option>
+    <option value="75"></option>
+    <option value="100"></option>
+</datalist>
+<datalist id="notes">
+    <option value="0"></option>
+    <option value="32"></option>
+    <option value="64"></option>
+    <option value="96"></option>
+    <option value="127"></option>
+</datalist>
 </body>
 <script src="./interface.js"></script>
 
