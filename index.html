@@ -13,15 +13,61 @@
     <div id="controls" class="controls">
         <input type="number" name="stepInterval" min="10" max="100" step="1" value="20">
         <button title="play" value="play">I&gt;</button>
+        <datalist id="lengths">
+            <option value="0"></option>
+            <option value="5"></option>
+            <option value="10"></option>
+            <option value="15"></option>
+            <option value="20"></option>
+        </datalist>
+        <datalist id="durations">
+            <option value="0"></option>
+            <option value="25"></option>
+            <option value="50"></option>
+            <option value="75"></option>
+            <option value="100"></option>
+        </datalist>
+        <datalist id="notes">
+            <option value="0"></option>
+            <option value="32"></option>
+            <option value="64"></option>
+            <option value="96"></option>
+            <option value="127"></option>
+        </datalist>
     </div>
     <ol class="tracks" id="tracks">
         <li class="track">
-            <div class="functions">
-                <select name="controller" class="controller"></select>
-                <select name="channel" classs="channel"></select>
-                <button title="insert before" value="insert before">&lt;+</button>
-                <button title="remove" value="remove">-</button>
-                <button title="insert after" value="insert after">+&gt;</button>
+            <div class="header">
+                <div class="functions">
+                    <select name="controller" class="controller">
+                        <option>Output</option>
+                        <option></option>
+                    </select>
+                    <select name="channel" classs="channel">
+                        <option disabled="disabled">Channel</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+
+                    </select>
+                </div>
+                <div class="functions">
+                    <button title="remove" value="remove">-</button>
+                    <button title="insert" value="insert">+</button>
+                </div>
             </div>
             <ol class="patterns">
                 <li class="pattern">
@@ -31,21 +77,19 @@
                             <div class="handle"></div>
                             <div class="values">
                                 <input type="checkbox" class="active" checked="checked" />
-                                <input type="range" title="length" class="length" min="0" max="20" value="10" />
-                                <input type="range" title="duration" class="duration" min="0" max="100" value="50" />
-                                <input type="range" title="note" class="note" min="0" max="127" value="60" />
+                                <input type="range" title="length" class="length" min="0" max="20" value="10" list="lengths"/>
+                                <input type="range" title="duration" class="duration" min="0" max="100" value="50" list="durations" />
+                                <input type="range" title="note" class="note" min="0" max="127" value="60" list="notes"/>
                             </div>
                             <div class="functions">
-                                <button title="insert before" value="insert before">&lt;+</button>
                                 <button title="remove" value="remove">-</button>
-                                <button title="insert after" value="insert after">+&gt;</button>
+                                <button title="insert" value="insert">+</button>
                             </div>
                         </li>
                     </ul>
                     <div class="functions">
-                        <button title="insert before" value="insert before">&lt;+</button>
                         <button title="remove" value="remove">-</button>
-                        <button title="insert after" value="insert after">+&gt;</button>         
+                        <button title="insert" value="insert">+</button>         
                     </div>
                 </li>
             </ol>
