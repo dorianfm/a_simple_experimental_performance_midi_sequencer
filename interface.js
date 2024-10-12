@@ -6,9 +6,9 @@ let controls = project.querySelector('#controls');
 let undoButton = controls.querySelector('button[value="undo"]');
 let redoButton = controls.querySelector('button[value="redo"]');
 
-let defaultTrack = document.querySelector('.track').cloneNode(true);
-let defaultPattern = document.querySelector('.pattern').cloneNode(true);
-let defaultStep = document.querySelector('.step').cloneNode(true);
+let defaultTrack = tracks.querySelector('.track').cloneNode(true);
+let defaultPattern = tracks.querySelector('.pattern').cloneNode(true);
+let defaultStep = tracks.querySelector('.step').cloneNode(true);
 
 let states = [], stateOffset = 0;
 
@@ -64,6 +64,13 @@ function controlButtonClick(action)
         case 'redo':
             controlRedo();
             break;
+        case 'load':
+            controlLoad();
+            break;
+        case 'save':
+            controlSave();
+            break;
+    
     }
 }
 
@@ -85,6 +92,44 @@ function controlRedo() {
         setState(states[stateOffset]);
     }
     updateStateButtons();
+}
+
+function controlSave() {
+    let state = currentState();
+    let title = state.controls.title 
+    let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+    var elm = document.createElement('a');
+    elm.classList.add('hidden');
+    elm.setAttribute("href", data);
+    elm.setAttribute("download", title + ".json");
+    document.body.appendChild(elm);
+    elm.click();
+    elm.remove();
+}
+
+function controlLoad() {
+
+    var elm = document.createElement('input');
+    elm.setAttribute("type", "file");
+    elm.classList.add('hidden');
+    document.body.appendChild(elm);
+    elm.addEventListener('change',(evt) => { loadData(elm.files); elm.remove(); });
+    elm.click();
+}
+
+function loadData(files) {
+    if (files.length <= 0) {
+        return;
+    }
+
+    var fr = new FileReader();
+  
+    fr.onload = function(e) { 
+        var state = JSON.parse(e.target.result);
+        setState(state);
+    }
+    
+    fr.readAsText(files.item(0));
 }
 
 function trackClick(evt)
@@ -285,16 +330,80 @@ function setState(state)
 {
     if (!state) { return; }
     for (var name in state.controls) {
-        let selector = `[name="${name}"]`;
-        let elm = controls.querySelector(selector);
+        let elm = controls.querySelector(`[name="${name}"]`);
         if (elm) elm.value = state.controls[name];
     };
-    state.tracks.forEach(setTrackState);
+    setTracksState(state.tracks);
 }
 
-function setTrackState(track, idx)
+function setTracksState(state)
 {
-   // console.log(track, idx);
+    let track, tracks = project.querySelectorAll('.track');
+    for (idx in state) {
+        if (idx > tracks.length - 1) {
+            track = defaultTrack.cloneNode(true)
+            tracks[tracks.length -1].after(track);
+        } else {
+            track = tracks[idx];
+        }
+        setTrackState(state[idx], track);
+    }
+    trimNodes(tracks, state.length);
+}
+
+function setTrackState(state, track)
+{
+    for (var name in state.config) {
+        let elm = track.querySelector(`[name="${name}"]`);
+        if (elm) elm.value = state.config[name];
+    }
+    setPatternsState(state.patterns, track.querySelectorAll('.pattern'));
+}
+
+function setPatternsState(state, patterns)
+{
+    let pattern;
+    for (var idx in state) {
+        if (idx > patterns.length - 1) {
+            pattern = defaultPattern.cloneNode(true)
+            patterns[patterns.length -1].after(pattern);
+        } else {
+            pattern = patterns[idx];
+        }
+        setPatternState(state[idx], pattern)
+    }
+    trimNodes(patterns, state.length);
+}
+
+function setPatternState(state, pattern)
+{
+    let step, steps = pattern.querySelectorAll('.step');
+    for (var idx in state) {
+        if (idx > steps.length - 1) {
+            step = defaultStep.cloneNode(true);
+            steps[steps.length - 1].after(step);
+        } else {
+            step = steps[idx];
+        }
+        setStepState(state[idx],step);
+    }
+    trimNodes(steps, state.length);
+}
+
+function setStepState(state, step)
+{
+    for (var name in state) {
+        let elm = step.querySelector(`[name="${name}"]`);
+        if (elm.getAttribute('type') == 'checkobox') {
+            if (elm.value == state[name]) {
+                elm.checked = 'checked';
+            } else {
+                elm.checked = false;
+            }
+        } else {
+            elm.value = state[name];
+        }
+    }
 }
 
 function currentState()
@@ -354,4 +463,15 @@ function stepState(step)
         }
     );
     return state;
+}
+
+function trimNodes(nodes, length)
+{
+    if (nodes.length < length) {
+        return;
+    }
+    for (var i = length; i < nodes.length; i++) {
+        let node = nodes.item(i-1);
+        node.remove();
+    }
 }

@@ -265,3 +265,7 @@ li.track::before {
 .dragTargetBelow {
     margin-bottom: 2rem;
 }
+
+.hidden {
+    display: none;
+}
