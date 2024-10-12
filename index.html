@@ -11,7 +11,7 @@
 
 <body>
 <form id="project">
-    <div id="controls" class="controls">
+    <div id="controls" class="controls config">
         <div class="play">
             <input type="number" name="stepInterval" min="10" max="100" step="1" value="20">
             <button title="play" value="play">&gt;</button>
@@ -26,10 +26,10 @@
             <button title="Redo" value="redo">&rArr;</button>
         </div>
     </div>
-    <ol class="tracks" id="tracks">
-        <li class="track">
-            <div class="header">
-                <div class="functions">
+    <ol class="components tracks" id="tracks">
+        <li class="component track">
+            <div class="header config">
+                <div class="options">
                     <select name="controller" class="controller">
                         <option>Output</option>
                         <option></option>
@@ -60,15 +60,16 @@
                     <button title="insert" value="insert">+</button>
                 </div>
             </div>
-            <ol class="patterns">
-                <li class="pattern">
+            <ol class="components patterns">
+                <li class="component pattern">
                     <div class="handle"></div>
-                    <ul class="steps">
-                        <li class="step">
+                    <div class="config"></div>
+                    <ul class="components steps">
+                        <li class="component step">
                             <div class="handle"></div>
-                            <div class="values">
+                            <div class="config">
                                 <input type="checkbox" name="active" value="1" checked="checked" />
-                                <input type="range" title="Length" name="length" min="0" max="20" value="10" list="lengths"/>
+                                <input type="range" title="Length" name="length" min="1 " max="20" value="10" list="lengths"/>
                                 <input type="range" title="Duration" name="duration" min="0" max="100" value="50" list="durations" />
                                 <input type="range" title="Note" name="note" min="0" max="127" value="60" list="notes"/>
                             </div>

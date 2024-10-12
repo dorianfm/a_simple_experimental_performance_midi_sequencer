@@ -6,9 +6,11 @@ let controls = project.querySelector('#controls');
 let undoButton = controls.querySelector('button[value="undo"]');
 let redoButton = controls.querySelector('button[value="redo"]');
 
-let defaultTrack = tracks.querySelector('.track').cloneNode(true);
-let defaultPattern = tracks.querySelector('.pattern').cloneNode(true);
-let defaultStep = tracks.querySelector('.step').cloneNode(true);
+let archetypes = {
+    track: tracks.querySelector('.track').cloneNode(true),
+    pattern: tracks.querySelector('.pattern').cloneNode(true),
+    step: tracks.querySelector('.step').cloneNode(true)
+};
 
 let states = [], stateOffset = 0;
 
@@ -47,8 +49,8 @@ function projectChange()
 function controlClick(evt)
 {
     if (evt.target.nodeName == 'BUTTON') {
-        controlButtonClick(evt.target.value);
         evt.preventDefault();
+        controlButtonClick(evt.target.value);
     }  
 }
 
@@ -96,7 +98,7 @@ function controlRedo() {
 
 function controlSave() {
     let state = currentState();
-    let title = state.controls.title 
+    let title = state.config.title 
     let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
     var elm = document.createElement('a');
     elm.classList.add('hidden');
@@ -235,8 +237,9 @@ function clearDraggable()
 
 function trackButtonClick(action, button, evt)
 {
+    evt.preventDefault();
     let target = button.closest('.step, .pattern, .track');
-    let newElement = evt.getModifierState(dragModifierKey) == true ? target : defaultFor(target); 
+    let newElement = evt.getModifierState(dragModifierKey) == true ? target : archetypeFor(target); 
     switch(action) {
         case 'remove':
             remove(target);
@@ -249,15 +252,14 @@ function trackButtonClick(action, button, evt)
             }
             break;
     }
-    evt.preventDefault();
     projectChange();
 }
 
-function defaultFor(target) {
+function archetypeFor(target) {
     if (!target) { return };
-    if (target.matches('.step')) return defaultStep;
-    if (target.matches('.pattern')) return defaultPattern; 
-    if (target.matches('.track')) return defaultTrack;
+    if (target.matches('.step')) return archetypes['step'];
+    if (target.matches('.pattern')) return archetypes['pattern']; 
+    if (target.matches('.track')) return archetypes['track'];
 }
 
 function elementClass(target) {
@@ -329,19 +331,16 @@ function updateStateButtons()
 function setState(state)
 {
     if (!state) { return; }
-    for (var name in state.controls) {
-        let elm = controls.querySelector(`[name="${name}"]`);
-        if (elm) elm.value = state.controls[name];
-    };
-    setTracksState(state.tracks);
+    setConfigState(project, state.config);
+    setTracksState(state.tracks, project.querySelectorAll('.track'));
 }
 
-function setTracksState(state)
+function setTracksState(state, tracks)
 {
-    let track, tracks = project.querySelectorAll('.track');
+    let track;
     for (idx in state) {
         if (idx > tracks.length - 1) {
-            track = defaultTrack.cloneNode(true)
+            track = archetypes['track'].cloneNode(true)
             tracks[tracks.length -1].after(track);
         } else {
             track = tracks[idx];
@@ -353,10 +352,7 @@ function setTracksState(state)
 
 function setTrackState(state, track)
 {
-    for (var name in state.config) {
-        let elm = track.querySelector(`[name="${name}"]`);
-        if (elm) elm.value = state.config[name];
-    }
+    setConfigState(track, state.config);
     setPatternsState(state.patterns, track.querySelectorAll('.pattern'));
 }
 
@@ -365,8 +361,8 @@ function setPatternsState(state, patterns)
     let pattern;
     for (var idx in state) {
         if (idx > patterns.length - 1) {
-            pattern = defaultPattern.cloneNode(true)
-            patterns[patterns.length -1].after(pattern);
+            pattern = archetypes['pattern'].cloneNode(true);
+            patterns[patterns.length-1].after(pattern);
         } else {
             pattern = patterns[idx];
         }
@@ -377,92 +373,103 @@ function setPatternsState(state, patterns)
 
 function setPatternState(state, pattern)
 {
-    let step, steps = pattern.querySelectorAll('.step');
+    setConfigState(pattern, pattern.config);
+    setStepsState(state.steps, pattern.querySelectorAll('.step'));
+}
+
+function setStepsState(state, steps) {
+    let step;
     for (var idx in state) {
         if (idx > steps.length - 1) {
-            step = defaultStep.cloneNode(true);
+            step = archetypes['step'].cloneNode(true);
             steps[steps.length - 1].after(step);
         } else {
             step = steps[idx];
         }
-        setStepState(state[idx],step);
+        setStepState(state[idx], step)
     }
-    trimNodes(steps, state.length);
+    trimNodes(steps, state.length);   
 }
 
 function setStepState(state, step)
 {
-    for (var name in state) {
-        let elm = step.querySelector(`[name="${name}"]`);
-        if (elm.getAttribute('type') == 'checkobox') {
-            if (elm.value == state[name]) {
-                elm.checked = 'checked';
-            } else {
-                elm.checked = false;
-            }
-        } else {
-            elm.value = state[name];
-        }
-    }
+    setConfigState(step, state.config)
 }
 
 function currentState()
 {
 
     let state = {
-        controls: {},
+        config: getConfigState(project),
         tracks: []
     };
-    controls.querySelectorAll('input,select').forEach(
-        (elm) => { 
-            state.controls[elm.getAttribute('name')] = elm.value;
-        }
-    );
     tracks.querySelectorAll('.track').forEach((elm, idx) => {
-        state.tracks[idx] = trackState(elm);
+        state.tracks[idx] = getTrackState(elm);
     })
     return state;
 }
 
-function trackState(track)
+function getTrackState(track)
 {
     let state = { 
-        config: {},
+        config: getConfigState(track),
         patterns: [] 
     };
-    track.querySelectorAll('.functions input,select').forEach(
-        (elm) => { 
-            state.config[elm.getAttribute('name')] = elm.value;
-        }
-    );
     track.querySelectorAll('.pattern').forEach(
         (elm, idx) => {
-            state.patterns[idx] = patternState(elm);
+            state.patterns[idx] = getPatternState(elm);
         }
     );
     return state;
 }
 
-function patternState(pattern)
+function getPatternState(pattern)
 {
-    let state = [];
+    let state = {
+        config: getConfigState(pattern),
+        steps: []
+    };
     pattern.querySelectorAll('.step').forEach(
         (elm, idx) => {
-            state[idx] = stepState(elm);
+            state.steps[idx] = getStepState(elm);
         }
     );
     return state;
 }
 
-function stepState(step)
+function getStepState(step)
 {
-    let state = {};
-    step.querySelectorAll('input,select').forEach(
+    let state = {
+        config: getConfigState(step)
+    };
+    return state;
+}
+
+function getConfigState(container)
+{
+    let config = {};
+    container.querySelector('.config').querySelectorAll('input, select').forEach(
         (elm) => { 
-            state[elm.getAttribute('name')] = elm.value;
+            config[elm.getAttribute('name')] = elm.value;
         }
     );
-    return state;
+    return config;
+}
+
+function setConfigState(container, config)
+{
+    for (var name in config) {
+        let elm = container.querySelector(`.config [name="${name}"]`);
+        if (elm.getAttribute('type') == 'checkobox') {
+            if (elm.value == config[name]) {
+                elm.checked = 'checked';
+            } else {
+                elm.checked = false;
+            }
+        } else {
+            elm.value = config[name];
+        }
+    }
 }
 
 function trimNodes(nodes, length)

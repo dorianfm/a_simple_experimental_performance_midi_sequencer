@@ -70,10 +70,6 @@ input[type="checkbox"] {
     justify-content: space-between;
 }
 
-
-
-
-
 .tracks {
     display: flex;
     flex-direction: row;
@@ -209,6 +205,11 @@ li.track::before {
 .step button {
     border: 1px dotted var(--foreground);
     width: 1.5rem;
+}
+
+.step input[type="range"] {
+    margin-top: 0.25rem;
+    margin-bottom: -0.25rem;
 }
 
 .handle {
