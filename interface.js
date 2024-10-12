@@ -97,7 +97,7 @@ function controlRedo() {
 }
 
 function controlSave() {
-    let state = currentState();
+    let state = currentState(project);
     let title = state.config.title 
     let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
     var elm = document.createElement('a');
@@ -303,7 +303,7 @@ function debounce(func, delay) {
 
 function updateState()
 {
-    let state = currentState();
+    let state = currentState(project);
     if (stateOffset > 0) {
         states = states.slice(stateOffset);
         stateOffset = 0;
@@ -380,7 +380,6 @@ function setPatternState(state, pattern)
 function setStepsState(state, steps) {
     let step;
     for (var idx in state) {
-        console.log(idx, steps.length, steps);
         if (idx > steps.length - 1) {
             step = archetypes['step'].cloneNode(true);
             steps[steps.length - 1].after(step);
@@ -397,54 +396,21 @@ function setStepState(state, step)
     setConfigState(step, state.config)
 }
 
-function currentState()
-{
-
-    let state = {
-        config: getConfigState(project),
-        tracks: []
-    };
-    tracks.querySelectorAll('.track').forEach((elm, idx) => {
-        state.tracks[idx] = getTrackState(elm);
-    })
-    return state;
-}
-
-function getTrackState(track)
-{
-    let state = { 
-        config: getConfigState(track),
-        patterns: [] 
-    };
-    track.querySelectorAll('.pattern').forEach(
-        (elm, idx) => {
-            state.patterns[idx] = getPatternState(elm);
-        }
-    );
-    return state;
-}
-
-function getPatternState(pattern)
+function currentState(parent)
 {
     let state = {
-        config: getConfigState(pattern),
-        steps: []
+        config: getConfigState(parent),
     };
-    pattern.querySelectorAll('.step').forEach(
-        (elm, idx) => {
-            state.steps[idx] = getStepState(elm);
-        }
-    );
+    let {child, children } = parent.dataset;
+    if (child && children) {
+        state[children] = [];
+        parent.querySelector('.'+children).querySelectorAll('.'+child).forEach((elm, idx) => {
+            state[children][idx] = currentState(elm);
+        });
+    }
     return state;
 }
 
-function getStepState(step)
-{
-    let state = {
-        config: getConfigState(step)
-    };
-    return state;
-}
 
 function getConfigState(container)
 {
