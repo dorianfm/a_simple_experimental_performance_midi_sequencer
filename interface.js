@@ -380,6 +380,7 @@ function setPatternState(state, pattern)
 function setStepsState(state, steps) {
     let step;
     for (var idx in state) {
+        console.log(idx, steps.length, steps);
         if (idx > steps.length - 1) {
             step = archetypes['step'].cloneNode(true);
             steps[steps.length - 1].after(step);

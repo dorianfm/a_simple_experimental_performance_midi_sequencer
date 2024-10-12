@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<form id="project">
+<form id="project" data-children="tracks" data-child="track">
     <div id="controls" class="controls config">
         <div class="play">
             <input type="number" name="stepInterval" min="10" max="100" step="1" value="20">
@@ -27,7 +27,7 @@
         </div>
     </div>
     <ol class="components tracks" id="tracks">
-        <li class="component track">
+        <li class="component track" data-children="patterns" data-child="pattern">
             <div class="header config">
                 <div class="options">
                     <select name="controller" class="controller">
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <ol class="components patterns">
-                <li class="component pattern">
+                <li class="component pattern" data-children="steps" data-child="step">
                     <div class="handle"></div>
                     <div class="config"></div>
                     <ul class="components steps">
