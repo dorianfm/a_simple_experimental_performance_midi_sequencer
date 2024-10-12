@@ -83,7 +83,7 @@ function controlTogglePlay() {
 function controlUndo() {
     if (stateOffset < states.length-1) {
         stateOffset++;
-        setState(states[stateOffset]);
+        setState(project, states[stateOffset]);
     }
     updateStateButtons();
 }
@@ -91,13 +91,13 @@ function controlUndo() {
 function controlRedo() {
     if (stateOffset > 0) {
         stateOffset--;
-        setState(states[stateOffset]);
+        setState(project, states[stateOffset]);
     }
     updateStateButtons();
 }
 
 function controlSave() {
-    let state = currentState(project);
+    let state = getState(project);
     let title = state.config.title 
     let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
     var elm = document.createElement('a');
@@ -128,7 +128,7 @@ function loadData(files) {
   
     fr.onload = function(e) { 
         var state = JSON.parse(e.target.result);
-        setState(state);
+        setState(project, state);
     }
     
     fr.readAsText(files.item(0));
@@ -303,7 +303,7 @@ function debounce(func, delay) {
 
 function updateState()
 {
-    let state = currentState(project);
+    let state = getState(project);
     if (stateOffset > 0) {
         states = states.slice(stateOffset);
         stateOffset = 0;
@@ -328,75 +328,7 @@ function updateStateButtons()
     }
 }
 
-function setState(state)
-{
-    if (!state) { return; }
-    setConfigState(project, state.config);
-    setTracksState(state.tracks, project.querySelectorAll('.track'));
-}
-
-function setTracksState(state, tracks)
-{
-    let track;
-    for (idx in state) {
-        if (idx > tracks.length - 1) {
-            track = archetypes['track'].cloneNode(true)
-            tracks[tracks.length -1].after(track);
-        } else {
-            track = tracks[idx];
-        }
-        setTrackState(state[idx], track);
-    }
-    trimNodes(tracks, state.length);
-}
-
-function setTrackState(state, track)
-{
-    setConfigState(track, state.config);
-    setPatternsState(state.patterns, track.querySelectorAll('.pattern'));
-}
-
-function setPatternsState(state, patterns)
-{
-    let pattern;
-    for (var idx in state) {
-        if (idx > patterns.length - 1) {
-            pattern = archetypes['pattern'].cloneNode(true);
-            patterns[patterns.length-1].after(pattern);
-        } else {
-            pattern = patterns[idx];
-        }
-        setPatternState(state[idx], pattern)
-    }
-    trimNodes(patterns, state.length);
-}
-
-function setPatternState(state, pattern)
-{
-    setConfigState(pattern, pattern.config);
-    setStepsState(state.steps, pattern.querySelectorAll('.step'));
-}
-
-function setStepsState(state, steps) {
-    let step;
-    for (var idx in state) {
-        if (idx > steps.length - 1) {
-            step = archetypes['step'].cloneNode(true);
-            steps[steps.length - 1].after(step);
-        } else {
-            step = steps[idx];
-        }
-        setStepState(state[idx], step)
-    }
-    trimNodes(steps, state.length);   
-}
-
-function setStepState(state, step)
-{
-    setConfigState(step, state.config)
-}
-
-function currentState(parent)
+function getState(parent)
 {
     let state = {
         config: getConfigState(parent),
@@ -405,10 +337,35 @@ function currentState(parent)
     if (child && children) {
         state[children] = [];
         parent.querySelector('.'+children).querySelectorAll('.'+child).forEach((elm, idx) => {
-            state[children][idx] = currentState(elm);
+            state[children][idx] = getState(elm);
         });
     }
     return state;
+}
+
+function setState(parent, state)
+{
+    if (!state) { return; }
+    setConfigState(parent, state.config);
+    let {child, children } = parent.dataset;
+    if (child && children && state[children] && archetypes[child]){
+        setChildrenState(parent.querySelector('.'+children).querySelectorAll('.'+child), state[children], archetypes[child]);
+
+    }
+}
+
+function setChildrenState(children, state, archetype)
+{
+    for (var idx in state) {
+        if (idx > children.length - 1) {
+            child = archetype.cloneNode(true);
+            children[children.length-1].after(child);
+        } else {
+            child = children[idx];
+        }
+        setState(child, state[idx]);
+    }
+    trimNodes(children, state.length); 
 }
 
 
