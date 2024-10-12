@@ -227,7 +227,7 @@ li.track::before {
     margin: -1px;
 }
 
-.step .values {
+.step .config {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
