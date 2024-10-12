@@ -2,6 +2,7 @@
 let project = document.querySelector('#project');
 let tracks = project.querySelector('#tracks');
 let controls = project.querySelector('#controls');
+let updated = controls.querySelector(['[name="updated"]']);
 
 let undoButton = controls.querySelector('button[value="undo"]');
 let redoButton = controls.querySelector('button[value="redo"]');
@@ -98,7 +99,7 @@ function controlRedo() {
 
 function controlSave() {
     let state = getState(project);
-    let title = state.config.title 
+    let title = state.config.title+' '+state.config.updated;
     let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
     var elm = document.createElement('a');
     elm.classList.add('hidden');
@@ -107,6 +108,17 @@ function controlSave() {
     document.body.appendChild(elm);
     elm.click();
     elm.remove();
+}
+
+function timeStamp() {
+    let date = new Date();
+    let string = date.getFullYear()+'-';
+    string += (date.getMonth()+1+'-').padStart(3,0);
+    string += (date.getDate()+' ').padStart(3,0);
+    string += (date.getHours()+'-').padStart(3,0);
+    string += (date.getMinutes()+'-').padStart(3,0);
+    string += (date.getSeconds()+'').padStart(2,0);
+    return string;
 }
 
 function controlLoad() {
@@ -303,6 +315,7 @@ function debounce(func, delay) {
 
 function updateState()
 {
+    updated.value = timeStamp();
     let state = getState(project);
     if (stateOffset > 0) {
         states = states.slice(stateOffset);
