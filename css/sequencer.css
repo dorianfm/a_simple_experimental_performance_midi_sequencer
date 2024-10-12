@@ -6,6 +6,7 @@
     --foreground: black;
     --background: white;
     --accent: grey;
+    --focus: magenta;
 }
 
 body {
@@ -34,6 +35,11 @@ textarea {
     height: 1.25rem;
 }
 
+button {
+    font-size: 120%;
+    line-height: 1rem;
+}
+
 button:active,
 button:hover {
     background: var(--foreground);
@@ -45,10 +51,13 @@ button:disabled {
     pointer-events: none;
 }
 
-/* *:focus {
-    outline: 1px solid hotpink;
-    --foreground: hotpink;
-} */
+*:focus-visible {
+    background: var(--focus) !important;
+    --background: var(--focus) !important;
+    outline-offset: 0;
+    border-color: var(--focus);
+    outline: 1px solid var(--focus);
+}
 
 input[type="checkbox"] {
     width: 1rem;
@@ -68,6 +77,13 @@ input[type="checkbox"] {
     padding: 0.5rem;
     border-bottom: 3px solid var(--foreground);
     justify-content: space-between;
+}
+
+.controls button[value="redo"] {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
 }
 
 .tracks {
@@ -202,29 +218,36 @@ li.track::before {
     column-gap: 0.5rem;
 }
 
-.step button {
+.functions button {
     border: 1px dotted var(--foreground);
     width: 1.5rem;
 }
 
 .step input[type="range"] {
-    margin-top: 0.25rem;
-    margin-bottom: -0.25rem;
-}
+    width: 8rem;
+} 
 
-.handle {
+.pattern .handle {
     background: url('../img/ht-50.gif');
-    width: calc(1.5rem);
+    width: 1.5rem;
     cursor: move;
+    border: 0px;
     border-right: 2px solid var(--foreground);
     margin-right: -1px;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: calc(100% + 4px);
+    height: auto;
+    max-height: none;
 }
 
 .step .handle {
     background: url('../img/ht-25.gif');
     border: 1px solid var(--foreground);
     margin: -1px;
+    min-height: 100%;
 }
 
 .step .config {
