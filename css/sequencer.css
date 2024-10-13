@@ -17,7 +17,7 @@ body {
     background: var(--backround);
     color: var(--foreground);
     accent-color: var(--accent);
-    padding-top: calc(3rem - 2px);
+    padding-top: calc(3rem + 1px);
     min-height: 100svh;
     min-width: 100svw;
     display: flex;
@@ -73,10 +73,18 @@ input[type="checkbox"] {
     left: 0;
     right: 0;
     background: var(--background);
-    height: 3rem;
+    height: calc(3rem + 3px);
     padding: 0.5rem;
     border-bottom: 3px solid var(--foreground);
     justify-content: space-between;
+}
+
+.controls button,
+.controls input,
+.controls select {
+    height: 2rem;
+    min-width: 2rem;
+    padding: 0 0.3rem;
 }
 
 .controls button[value="redo"] {
@@ -85,6 +93,22 @@ input[type="checkbox"] {
     -o-transform: scaleX(-1);
     transform: scaleX(-1);
 }
+
+.project .controls button[value="pause"]
+{
+    display: none;
+}
+
+.project.playing .controls button[value="play"]
+{
+    display: none;
+}
+
+.project.playing .controls button[value="pause"]
+{
+    display: inline-block;
+}
+
 
 .tracks {
     display: flex;
@@ -121,7 +145,20 @@ input[type="checkbox"] {
     height: 2rem;
     border-right: 2px solid var(--foreground);
     background: none;
-    /* background: url('../img/ht-75.gif'); */
+}
+
+.track .header > * {
+    width: 40%;
+}
+
+.track .header .handle {
+    height: 2rem;
+    width: 20%;
+    background: url('../img/ht-75.gif');
+}
+
+.track .header .functions {
+    text-align: right;
 }
 
 .track .header button {
@@ -216,6 +253,10 @@ li.track::before {
     height: 2rem;
     margin-top: -1px;
     column-gap: 0.5rem;
+}
+
+.step.playing {
+    background-color: yellow;
 }
 
 .functions button {

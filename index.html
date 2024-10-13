@@ -7,41 +7,38 @@
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
     <title>Sequencer</title>
     <link rel="stylesheet" href="./css/sequencer.css">
-    <!-- <script src='node_modules/jazz-midi-electron/jazz-midi-electron.js'></script> -->
-    <script src='node_modules/jzz/javascript/JZZ.js'></script>
-    <!-- <script src="./node_modules/jzz/javascript/JZZ.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/jzz"></script>     -->
+    <!-- Script tag in HTML page -->
+    <script src="node_modules/webmidi/dist/iife/webmidi.iife.js"></script>
 </head>
 
 <body>
-<form id="project" data-children="tracks" data-child="track">
+<form id="project" class="project" data-children="tracks" data-child="track">
     <div id="controls" class="controls config">
         <div class="play">
-            <input type="number" name="stepInterval" min="10" max="100" step="1" value="20">
+            <input type="number" name="interval" min="10" max="100" step="1" value="25">
             <button title="rewind" value="rewind">&#x23EE;</button>
 
             <button title="play" value="play">&#x23F5;</button>
             <button title="pause" value="pause">&#x23F8;</button>
-
         </div>
         <div class="project">
-            <button title="Load" value="load">load</button>
+            <button title="Load" value="load">Load</button>
             <input type="text" name="title">
             <input type="hidden" name="updated">
-            <button title="Save" value="save">save</button>
+            <button title="Save" value="save">Save</button>
         </div>
         <div class="history">
             <button title="Undo" value="undo">&#9100;</button>
             <button title="Redo" value="redo">&#9100;</button>
+            <button title="panic" value="panic">!</button>
         </div>
     </div>
     <ol class="components tracks" id="tracks">
         <li class="component track" data-children="patterns" data-child="pattern">
             <div class="header config">
                 <div class="options">
-                    <select name="controller" class="controller">
+                    <select name="output" class="ouput">
                         <option>Output</option>
-                        <option></option>
                     </select>
                     <select name="channel" classs="channel">
                         <option disabled="disabled">Channel</option>
@@ -70,13 +67,13 @@
                 </div>
             </div>
             <ol class="components patterns">
-                <li class="component pattern" data-children="steps" data-child="step">
+                <li class="component pattern drag-item" data-children="steps" data-child="step">
                     <div class="handle" tabindex="0">
                        
                     </div>
                     <div class="config"></div>
                     <ul class="components steps">
-                        <li class="component step">
+                        <li class="component step drag-item">
                             <div class="handle" tabindex="0">
                             
                             </div>

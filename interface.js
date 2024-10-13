@@ -17,7 +17,7 @@ let states = [], stateOffset = 0;
 
 let dragSource, dragElement, dragModifierKey;
 
-if (navigator.appVersion.indexOf('Mac') != -1) {
+if (navigator.userAgent.includes('Mac')) {
     dragModifierKey = 'Alt';
 } else {
     dragModifierKey = 'Control';
@@ -25,6 +25,9 @@ if (navigator.appVersion.indexOf('Mac') != -1) {
 
 const debounceDrag = debounce(trackDrag, 20);
 const debounceDragLeave = debounce(trackDragLeave, 20);
+
+document.addEventListener('keydown', keydown);
+document.addEventListener('keyup', keyup);
 
 project.addEventListener('change', projectChange);
 tracks.addEventListener('mousedown', trackMouseDown);
@@ -47,6 +50,11 @@ function projectChange()
     updateState();
 }
 
+function midiChange(evt)
+{
+
+}
+
 function controlClick(evt)
 {
     if (evt.target.nodeName == 'BUTTON') {
@@ -60,6 +68,12 @@ function controlButtonClick(action)
     switch(action) {
         case 'play':
             controlTogglePlay();
+            break;
+        case 'pause':
+            controlPause();
+            break;
+        case 'rewind':
+            controlRewind();
             break;
         case 'undo':
             controlUndo();
@@ -78,7 +92,112 @@ function controlButtonClick(action)
 }
 
 function controlTogglePlay() {
+    if (project.classList.contains('playing')) {
+        controlPause();
+    } else {
+        controlPlay();
+    }
+}
 
+function controlPause() {
+    project.querySelectorAll('.track').forEach(pauseTrack);
+    project.classList.remove('playing'); 
+}
+
+function controlPlay() {
+    project.querySelectorAll('.track').forEach(playTrack);
+    project.classList.add('playing');
+}
+
+function controlRewind() {
+    project.querySelectorAll('.track').forEach(rewindTrack);
+}
+
+function playTrack(track)
+{
+    track.dataset.playing = true;
+    playStep(track);
+}
+
+function pauseTrack(track) {
+    if (!track.dataset.playing) {
+        return;
+    }
+    track.dataset.playing = false;
+    clearTimeout(track.dataset.stepTimeout);
+}
+
+function rewindTrack(track) {
+    track.querySelector('.playing').classList.remove('playing');
+}
+
+function playStep(track) {
+    
+    let interval = controls.querySelector('[name="interval"]').value;
+    let output = track.querySelector('.config select[name="output"]').value;
+    let channel = track.querySelector('.config select[name="channel"]').value;
+
+    let step = nextStep(track);
+    let config = getStepConfig(step);
+    let stepInterval = config.length * interval;
+
+    if (config.duration > 0 && WebMidi.outputs[output]) {
+        WebMidi.outputs[output].channels[channel].playNote(config.note);
+        if (config.duration < 100) {
+            WebMidi.outputs[output].channels[channel].stopNote(config.note, {time: "+"+(stepInterval * (config.duration/100)) });
+        }
+    }
+
+    track.dataset.lastStep = step;
+    track.dataset.stepTimeout = setTimeout(() => { playStep(track); }, stepInterval);
+}
+
+function nextStep(track) 
+{
+    let step;
+    let currentStep = track.querySelector('.step.playing');
+    if (currentStep) {
+        if (hasClass(currentStep.nextSibling,'step')) {
+            step = currentStep.nextSibling;
+        } else {
+            let pattern = currentStep.closest('.pattern');
+            if (hasClass(pattern.nextSibling, 'pattern')) {
+                step = pattern.nextSibling.querySelector('.step');
+            }
+        }
+        currentStep.classList.remove('playing');
+    }
+    if (!step || !hasClass(step, 'step')) {
+
+        step = track.querySelector('.step'); 
+    }
+    step.classList.add('playing');
+    return step;
+}
+
+
+function getStepConfig(step)
+{
+    return {
+        note: step.querySelector('[name="note"]').value,
+        duration: step.querySelector('[name="duration"]').value,
+        length: step.querySelector('[name="length"]').value,
+        active: step.querySelector('[name="active"]').value,
+    }
+}
+
+function hasClass(element, cssClass) {
+    if (typeof(element) != 'object') {
+        return false;
+    }
+    if (typeof(element.classList) != 'object') {
+        return false;
+    }
+    if (element.classList.contains(cssClass)) {
+        return true;
+    }
+    console.log(element);
+    return false;
 }
 
 function controlUndo() {
@@ -174,6 +293,7 @@ function trackDragStart(evt)
 function trackDragEnd(evt)
 {
     evt.target.classList.remove('dragging');
+    evt.target.closest('.drag-item').setAttribute("draggable", "false");
     dragElement = false;
     clearDraggable();
 }
@@ -205,6 +325,7 @@ function trackDrop(evt)
     let target = evt.target.closest(elementClass(dragElement));
     if (target) {
         dragElement.classList.remove('dragging');
+        dragElement.querySelecto('.playing').classList.remove('.playing');
         if (evt.getModifierState(dragModifierKey) === true) {
             dragElement = dragElement.cloneNode(true);
         } 
@@ -419,3 +540,38 @@ function trimNodes(nodes, length)
         node.remove();
     }
 }
+
+function keydown(evt)
+{
+
+}
+
+function keyup(evt)
+{
+
+}
+
+function midiEnabled()
+{
+    assignMidiOutputs();
+}
+
+function assignMidiOutputs()
+{
+    document.querySelectorAll('select[name="output"]').forEach((elm) => {
+        WebMidi.outputs.forEach((device,idx) => {
+            let option = elm.querySelector('select[value="'+idx+'"]');
+            if (!option) {
+                option = document.createElement('option');
+                option.setAttribute('value',idx);
+                elm.appendChild(option);
+            }
+            option.textContent = device.name;
+        });
+    });
+}
+
+WebMidi
+  .enable()
+  .then(midiEnabled)
+  .catch(err => console.log(err));
