@@ -118,10 +118,8 @@ function controlRewind() {
 
 function controlPanic() {
     for (var i = 0 ; i < WebMidi.outputs.length; i++) {
-        console.log(i);
         WebMidi.outputs[i].sendAllNotesOff();
         WebMidi.outputs[i].sendAllSoundOff();
-
     }
 }
 
