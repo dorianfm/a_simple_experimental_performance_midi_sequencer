@@ -75,6 +75,9 @@ function controlButtonClick(action)
         case 'rewind':
             controlRewind();
             break;
+        case 'panic':
+            controlPanic();
+            break;  
         case 'undo':
             controlUndo();
             break;
@@ -111,6 +114,15 @@ function controlPlay() {
 
 function controlRewind() {
     project.querySelectorAll('.track').forEach(rewindTrack);
+}
+
+function controlPanic() {
+    for (var i = 0 ; i < WebMidi.outputs.length; i++) {
+        console.log(i);
+        WebMidi.outputs[i].sendAllNotesOff();
+        WebMidi.outputs[i].sendAllSoundOff();
+
+    }
 }
 
 function playTrack(track)
