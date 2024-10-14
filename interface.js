@@ -13,7 +13,7 @@ let archetypes = {
     step: tracks.querySelector('.step').cloneNode(true)
 };
 
-let states = [], stateOffset = 0;
+let states = [];
 
 let dragSource, dragElement, dragModifierKey;
 
@@ -43,11 +43,20 @@ tracks.addEventListener('drop', trackDrop);
 
 controls.addEventListener('click', controlClick);
 
-projectChange(); // sets inital state
+projectInit();
+
+function projectInit()
+{
+    states = JSON.parse(window.localStorage.getItem('states')) ?? [];
+    let stateOffset = window.localStorage.getItem('stateOffset') ?? 0;
+    changeState(stateOffset);
+    updateStateButtons();
+}
 
 function projectChange()
 {
     updateState();
+    updateStateButtons();
 }
 
 function midiChange(evt)
@@ -90,6 +99,8 @@ function controlButtonClick(action)
         case 'save':
             controlSave();
             break;
+        case 'new':
+            controlNew();
     
     }
 }
@@ -211,18 +222,36 @@ function hasClass(element, cssClass) {
 }
 
 function controlUndo() {
-    if (stateOffset < states.length-1) {
-        stateOffset++;
-        setState(project, states[stateOffset]);
+    let stateOffset = parseInt(window.localStorage.getItem('stateOffset'));
+    if (stateOffset < states.length - 1) {
+        changeState(stateOffset+1);
     }
-    updateStateButtons();
 }
 
 function controlRedo() {
+    let stateOffset = parseInt(window.localStorage.getItem('stateOffset'));
     if (stateOffset > 0) {
-        stateOffset--;
-        setState(project, states[stateOffset]);
+        changeState(stateOffset-1);
     }
+}
+
+function controlNew()
+{
+    states = [];
+    project.querySelectorAll('.track').forEach((elm) => { elm.remove(); });
+    tracks.appendChild(archetypes.track.cloneNode(true));
+    states.unshift(getState(project));
+    controls.querySelector('[name="stateOffset"]').value = states.length;
+    updateStateButtons();
+}
+
+function changeState(offset)
+{
+    if (states[offset]) {
+        setState(project, states[offset]);
+        window.localStorage.setItem('stateOffset', offset);
+    } 
+    controls.querySelector('[name="stateOffset"]').value = (states.length - offset);
     updateStateButtons();
 }
 
@@ -335,7 +364,10 @@ function trackDrop(evt)
     let target = evt.target.closest(elementClass(dragElement));
     if (target) {
         dragElement.classList.remove('dragging');
-        dragElement.querySelecto('.playing').classList.remove('.playing');
+        let playing = dragElement.querySelector('.playing')
+        if (playing) {
+            playing.classList.remove('.playing');
+        }
         if (evt.getModifierState(dragModifierKey) === true) {
             dragElement = dragElement.cloneNode(true);
         } 
@@ -447,25 +479,26 @@ function debounce(func, delay) {
 function updateState()
 {
     updated.value = timeStamp();
-    let state = getState(project);
+    let stateOffset = window.localStorage.getItem('stateOffset')
     if (stateOffset > 0) {
         states = states.slice(stateOffset);
         stateOffset = 0;
     }
-    states.unshift(state);
-    updateStateButtons();
-    
+    states.unshift(getState(project));
+    window.localStorage.setItem('states', JSON.stringify(states));
+    window.localStorage.setItem('stateOffset', stateOffset);
+    controls.querySelector('[name="stateOffset"]').value = (states.length - stateOffset);
 }
 
 function updateStateButtons()
 {
-    if (states.length < 2 || stateOffset >= states.length - 1) {
-        undoButton.disabled = true;
+    if ((states.length < 2) ||  (window.localStorage.getItem('stateOffset') >= (states.length - 1))) {
+        // undoButton.disabled = true;
     } else {
         undoButton.disabled = false;
     }
 
-    if (stateOffset != 0) {
+    if (window.localStorage.getItem('stateOffset') != 0) {
         redoButton.disabled = false;
     } else {
         redoButton.disabled = true;
@@ -494,7 +527,6 @@ function setState(parent, state)
     let {child, children } = parent.dataset;
     if (child && children && state[children] && archetypes[child]){
         setChildrenState(parent.querySelector('.'+children).querySelectorAll('.'+child), state[children], archetypes[child]);
-
     }
 }
 
