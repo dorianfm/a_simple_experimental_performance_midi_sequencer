@@ -12,8 +12,6 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
-    "jazz-midi-electron": "^2.0.1",
-    "jzz": "^1.8.6",
     "webmidi": "^3.1.11"
   },
   "devDependencies": {
