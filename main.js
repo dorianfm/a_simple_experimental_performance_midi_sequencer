@@ -9,13 +9,8 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js')
         }
     });
-    JME.init(win);
     win.loadFile('index.html')
 }
-
-app.whenReady().then(() => {
-    createWindow()
-})
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
