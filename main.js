@@ -1,7 +1,5 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('node:path')
-const JZZ = require('jzz');
-const JME = require('jazz-midi-electron');
 
 const createWindow = () => {
     const win = new BrowserWindow({
