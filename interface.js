@@ -520,31 +520,6 @@ function getState(parent)
     return state;
 }
 
-function setState(parent, state)
-{
-    if (!state) { return; }
-    setConfigState(parent, state.config);
-    let {child, children } = parent.dataset;
-    if (child && children && state[children] && archetypes[child]){
-        setChildrenState(parent.querySelector('.'+children).querySelectorAll('.'+child), state[children], archetypes[child]);
-    }
-}
-
-function setChildrenState(children, state, archetype)
-{
-    for (var idx in state) {
-        if (idx > children.length - 1) {
-            child = archetype.cloneNode(true);
-            children[children.length-1].after(child);
-        } else {
-            child = children[idx];
-        }
-        setState(child, state[idx]);
-    }
-    trimNodes(children, state.length); 
-}
-
-
 function getConfigState(container)
 {
     let config = {};
@@ -554,6 +529,31 @@ function getConfigState(container)
         }
     );
     return config;
+}
+
+
+function setState(element, state)
+{
+    if (!state) { return; }
+    setConfigState(element, state.config);
+    let {child, children } = element.dataset;
+    if (child && children && state[children] && archetypes[child]){
+        setChildrenState(element.querySelector('.'+children).querySelectorAll('.'+child), state[children], archetypes[child]);
+    }
+}
+
+function setChildrenState(children, state, archetype)
+{
+    for (var idx in state) {
+        if (idx > children.length - 1) {
+            child = archetype.cloneNode(true);
+            children[0].parentNode.appendChild(child);
+        } else {
+            child = children[idx];
+        }
+        setState(child, state[idx]);
+    }
+    trimNodes(children, state.length); 
 }
 
 function setConfigState(container, config)
