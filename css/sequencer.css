@@ -103,6 +103,11 @@ input[type="checkbox"] {
     transform: scaleY(-1);
 }
 
+.controls input[name="stateOffset"] {
+    width: 6ch;
+    text-align: right;
+}
+
 .project .controls button[value="pause"]
 {
     display: none;
