@@ -6,10 +6,15 @@ const createWindow = () => {
         width: 800,
         height: 600,
         webPreferences: {
+            backgroundThrottling: false,
             preload: path.join(__dirname, 'preload.js')
         }
     });
+
     win.loadFile('index.html')
+    win.setFullScreen(true);
+    win.setMinimizable(false);
+    win.setMenuBarVisibility(false);
 }
 
 app.on('window-all-closed', () => {
@@ -18,7 +23,6 @@ app.on('window-all-closed', () => {
 
 app.whenReady().then(() => {
     createWindow()
-
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
