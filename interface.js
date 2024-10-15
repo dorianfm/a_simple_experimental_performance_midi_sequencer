@@ -51,6 +51,7 @@ function projectInit()
     changeState(getStateOffset());
     updateStateButtons();
     WebMidi.enable().then(midiEnabled).catch(err => console.log(err));
+    WebMidi.addListener('portschanged', midiAssignOutputs);
 }
 
 function projectChange()
@@ -186,18 +187,17 @@ function nextStep(track)
     let step;
     let currentStep = track.querySelector('.step.playing');
     if (currentStep) {
-        if (hasClass(currentStep.nextSibling,'step')) {
-            step = currentStep.nextSibling;
+        if (hasClass(currentStep.nextElementSibling,'step')) {
+            step = currentStep.nextElementSibling;
         } else {
             let pattern = currentStep.closest('.pattern');
-            if (hasClass(pattern.nextSibling, 'pattern')) {
-                step = pattern.nextSibling.querySelector('.step');
+            if (hasClass(pattern.nextElementSibling, 'pattern')) {
+                step = pattern.nextElementSibling.querySelector('.step');
             }
         }
         currentStep.classList.remove('playing');
     }
     if (!step || !hasClass(step, 'step')) {
-
         step = track.querySelector('.step'); 
     }
     step.classList.add('playing');
@@ -216,6 +216,9 @@ function getStepConfig(step)
 }
 
 function hasClass(element, cssClass) {
+    if (!element) {
+        return false;
+    }
     if (typeof(element) != 'object') {
         return false;
     }
@@ -603,10 +606,10 @@ function keyup(evt)
 
 function midiEnabled()
 {
-    assignMidiOutputs();
+    midiAssignOutputs();
 }
 
-function assignMidiOutputs()
+function midiAssignOutputs()
 {
     document.querySelectorAll('select[name="output"]').forEach((elm) => {
         WebMidi.outputs.forEach((device,idx) => {
@@ -620,4 +623,3 @@ function assignMidiOutputs()
         });
     });
 }
-
