@@ -114,8 +114,10 @@ input[type="checkbox"] {
 }
 
 .controls input[name="stateOffset"] {
-    width: 6ch;
+    width: 4ch;
     text-align: right;
+    padding: 0;
+    border-color: var(--background);
 }
 
 .project .controls button[value="pause"]
