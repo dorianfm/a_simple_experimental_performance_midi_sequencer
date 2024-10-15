@@ -2,6 +2,12 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: "Noto Emoji";
+    src: url('../fonts/NotoEmoji-VariableFont_wght.ttf')  format('truetype');
+}
+   
+
 :root {
     --foreground: black;
     --background: white;
@@ -37,6 +43,12 @@ textarea {
 
 button {
     font-size: 120%;
+    line-height: 1rem;
+}
+
+button.icon {
+    font-family: 'Noto Emoji';
+    font-size: 150%;
     line-height: 1rem;
 }
 
