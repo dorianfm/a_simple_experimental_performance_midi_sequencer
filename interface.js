@@ -247,8 +247,9 @@ function controlNew()
     states = [];
     project.querySelectorAll('.track').forEach((elm) => { elm.remove(); });
     tracks.appendChild(archetypes.track.cloneNode(true));
+    window.localStorage.setItem('stateOffset', 0);
     updateState();
-    // window.localStorage.setItem('stateOffset',states.length - 1);
+    updateStateButtons();
 }
 
 function changeState(offset)
@@ -508,20 +509,8 @@ function updateState()
 function updateStateButtons()
 {
     let stateOffset = getStateOffset();
-    console.log(stateOffset);
-    if ((states.length < 2) ||  (stateOffset >= (states.length - 1))) {
-        undoButton.disabled = true;
-    } else {
-        undoButton.disabled = false;
-    }
-
-
-
-    if (stateOffset != 0) {
-        redoButton.disabled = false;
-    } else {
-        redoButton.disabled = true;
-    }
+    undoButton.disabled = ((states.length < 2) || (stateOffset >= (states.length - 1)));
+    redoButton.disabled = (stateOffset == 0);
 }
 
 function getState(parent)
