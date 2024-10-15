@@ -67,6 +67,7 @@ input[type="checkbox"] {
 .controls {
     display: flex;
     position: fixed;
+    white-space: nowrap;
     z-index: 10;
     max-width: 100%;
     top: 0;
@@ -77,6 +78,7 @@ input[type="checkbox"] {
     padding: 0.5rem;
     border-bottom: 3px solid var(--foreground);
     justify-content: space-between;
+    column-gap: 1rem;
 }
 
 .controls button,
