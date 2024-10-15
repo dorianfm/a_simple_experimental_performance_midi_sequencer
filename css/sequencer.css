@@ -81,6 +81,14 @@ input[type="checkbox"] {
     column-gap: 1rem;
 }
 
+.controls > div {
+    display: flex;
+    white-space: nowrap;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+}
+
+
 .controls button,
 .controls input,
 .controls select {

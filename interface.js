@@ -48,9 +48,9 @@ projectInit();
 function projectInit()
 {
     states = JSON.parse(window.localStorage.getItem('states')) ?? [];
-    let stateOffset = window.localStorage.getItem('stateOffset') ?? 0;
-    changeState(stateOffset);
+    changeState(getStateOffset());
     updateStateButtons();
+    WebMidi.enable().then(midiEnabled).catch(err => console.log(err));
 }
 
 function projectChange()
@@ -62,6 +62,12 @@ function projectChange()
 function midiChange(evt)
 {
 
+}
+
+function getStateOffset()
+{
+    let stateOffset = Number(window.localStorage.getItem('stateOffset'));
+    return stateOffset;
 }
 
 function controlClick(evt)
@@ -149,7 +155,9 @@ function pauseTrack(track) {
 }
 
 function rewindTrack(track) {
-    track.querySelector('.playing').classList.remove('playing');
+    track.querySelectorAll('.playing').forEach( (playing) => { 
+        playing.classList.remove('playing'); 
+    });
 }
 
 function playStep(track) {
@@ -217,19 +225,18 @@ function hasClass(element, cssClass) {
     if (element.classList.contains(cssClass)) {
         return true;
     }
-    console.log(element);
     return false;
 }
 
 function controlUndo() {
-    let stateOffset = parseInt(window.localStorage.getItem('stateOffset'));
+    let stateOffset = getStateOffset();
     if (stateOffset < states.length - 1) {
         changeState(stateOffset+1);
     }
 }
 
 function controlRedo() {
-    let stateOffset = parseInt(window.localStorage.getItem('stateOffset'));
+    let stateOffset = getStateOffset();
     if (stateOffset > 0) {
         changeState(stateOffset-1);
     }
@@ -240,9 +247,8 @@ function controlNew()
     states = [];
     project.querySelectorAll('.track').forEach((elm) => { elm.remove(); });
     tracks.appendChild(archetypes.track.cloneNode(true));
-    states.unshift(getState(project));
-    controls.querySelector('[name="stateOffset"]').value = states.length;
-    updateStateButtons();
+    updateState();
+    // window.localStorage.setItem('stateOffset',states.length - 1);
 }
 
 function changeState(offset)
@@ -363,13 +369,9 @@ function trackDrop(evt)
 {
     let target = evt.target.closest(elementClass(dragElement));
     if (target) {
-        dragElement.classList.remove('dragging');
-        let playing = dragElement.querySelector('.playing')
-        if (playing) {
-            playing.classList.remove('.playing');
-        }
+        cleanElement(dragElement);
         if (evt.getModifierState(dragModifierKey) === true) {
-            dragElement = dragElement.cloneNode(true);
+            dragElement = cloneElement(dragElement)
         } 
         if (isAbove(evt.clientY, target)) {
             target.before(dragElement);
@@ -457,13 +459,25 @@ function remove(target)
 }
 
 function insertBefore(target, element) {
-    target.before(element.cloneNode(true));
+    target.before(cloneElement(element));
 }
 
 function insertAfter(target, element) {
-    target.after(element.cloneNode(true));
+    target.after(cloneElement(element));
 }
 
+function cloneElement(element) {
+    return cleanElement(element.cloneNode(true));  
+}
+
+function cleanElement(element) {
+    element.classList.remove('dragging');
+    element.classList.remove('playing');
+    element.querySelectorAll('.playing').forEach((child) => {
+       child.classList.remove('playing'); 
+    });
+    return element;
+}
 
 function debounce(func, delay) {
     let timerId;
@@ -479,26 +493,31 @@ function debounce(func, delay) {
 function updateState()
 {
     updated.value = timeStamp();
-    let stateOffset = window.localStorage.getItem('stateOffset')
+    let stateOffset = getStateOffset();
     if (stateOffset > 0) {
         states = states.slice(stateOffset);
         stateOffset = 0;
-    }
+    } 
     states.unshift(getState(project));
     window.localStorage.setItem('states', JSON.stringify(states));
     window.localStorage.setItem('stateOffset', stateOffset);
-    controls.querySelector('[name="stateOffset"]').value = (states.length - stateOffset);
+    let undoOffset = (states.length - stateOffset);
+    controls.querySelector('[name="stateOffset"]').value = undoOffset;
 }
 
 function updateStateButtons()
 {
-    if ((states.length < 2) ||  (window.localStorage.getItem('stateOffset') >= (states.length - 1))) {
-        // undoButton.disabled = true;
+    let stateOffset = getStateOffset();
+    console.log(stateOffset);
+    if ((states.length < 2) ||  (stateOffset >= (states.length - 1))) {
+        undoButton.disabled = true;
     } else {
         undoButton.disabled = false;
     }
 
-    if (window.localStorage.getItem('stateOffset') != 0) {
+
+
+    if (stateOffset != 0) {
         redoButton.disabled = false;
     } else {
         redoButton.disabled = true;
@@ -613,7 +632,3 @@ function assignMidiOutputs()
     });
 }
 
-WebMidi
-  .enable()
-  .then(midiEnabled)
-  .catch(err => console.log(err));

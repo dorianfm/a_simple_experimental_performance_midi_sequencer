@@ -3,8 +3,8 @@ const path = require('node:path')
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1280,
+        height: 768,
         webPreferences: {
             backgroundThrottling: false,
             preload: path.join(__dirname, 'preload.js')
@@ -12,8 +12,8 @@ const createWindow = () => {
     });
 
     win.loadFile('index.html')
-    win.setFullScreen(true);
-    win.setMinimizable(false);
+    // win.setFullScreen(true);
+    // win.setMinimizable(false);
     win.setMenuBarVisibility(false);
 }
 
