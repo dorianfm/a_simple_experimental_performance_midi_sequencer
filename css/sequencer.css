@@ -186,13 +186,7 @@ input[type="checkbox"] {
 }
 
 .track .header > * {
-    width: 40%;
-}
-
-.track .header .handle {
-    height: 2rem;
-    width: 20%;
-    background: url('../img/ht-75.gif');
+	white-space: nowrap;
 }
 
 .track .header .functions {
