@@ -576,7 +576,7 @@ function getState(parent)
 function getConfigState(container)
 {
     let config = {};
-    container.querySelector(':scope > .config').querySelectorAll('input, select').forEach(
+    container.querySelector(':not(.components) .config').querySelectorAll('input, select').forEach(
         (elm) => { 
 			if (elm.getAttribute('type') == 'checkbox') {
 				if (elm.checked) {
@@ -620,7 +620,7 @@ function setChildrenState(children, state, archetype)
 function setConfigState(container, config)
 {
     for (var name in config) {
-        let elm = container.querySelector(`:scope > .config [name="${name}"]`);
+        let elm = container.querySelector(`:not(.components) .config [name="${name}"]`);
         if (elm.getAttribute('type') == 'checkbox') {
             if (elm.value == config[name]) {
                 elm.checked = true;
