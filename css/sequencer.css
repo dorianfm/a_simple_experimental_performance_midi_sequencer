@@ -248,6 +248,7 @@ li.track::before {
     margin: 0;
     overflow: hidden;
     background: var(--background);
+	position: relative;
 }
 
 .pattern + .pattern {
@@ -263,6 +264,12 @@ li.track::before {
     align-content: stretch;
     border-left: 2px solid var(--foreground);
 	order: 3;
+}
+
+.pattern > .config input[name="active"] {
+	position: absolute;
+	top: 0.3rem;
+	left: 0.2rem;
 }
 
 .pattern > .functions button {
