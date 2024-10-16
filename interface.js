@@ -250,6 +250,7 @@ function controlNew()
     states = [];
     project.querySelectorAll('.track').forEach((elm) => { elm.remove(); });
     tracks.appendChild(archetypes.track.cloneNode(true));
+    midiAssignOutputs();
     window.localStorage.setItem('stateOffset', 0);
     updateState();
     updateStateButtons();
@@ -613,7 +614,7 @@ function midiAssignOutputs()
 {
     document.querySelectorAll('select[name="output"]').forEach((elm) => {
         WebMidi.outputs.forEach((device,idx) => {
-            let option = elm.querySelector('select[value="'+idx+'"]');
+            let option = elm.querySelector('option[value="'+idx+'"]');
             if (!option) {
                 option = document.createElement('option');
                 option.setAttribute('value',idx);
