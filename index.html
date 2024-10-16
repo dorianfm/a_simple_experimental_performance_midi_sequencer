@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
     <title>Sequencer</title>
     <link rel="stylesheet" href="./css/sequencer.css">
     <script src="node_modules/webmidi/dist/iife/webmidi.iife.js"></script>
@@ -71,7 +71,9 @@
                     <div class="handle" tabindex="0">
                        
                     </div>
-                    <div class="config"></div>
+					<div class="config">
+						<input type="checkbox" name="active" value="1" checked="checked" />
+					</div>
                     <ul class="components steps">
                         <li class="component step drag-item">
                             <div class="handle" tabindex="0">
@@ -89,10 +91,10 @@
                             </div>
                         </li>
                     </ul>
-                    <div class="functions">
-                        <button title="remove" value="remove">-</button>
-                        <button title="insert" value="insert">+</button>         
-                    </div>
+					<div class="functions">
+						<button title="remove" value="remove">-</button>
+						<button title="insert" value="insert">+</button>         
+					</div>
                 </li>
             </ol>
         </li>

@@ -171,6 +171,7 @@ function playStep(track) {
     let config = getStepConfig(step);
     let stepInterval = config.length * interval;
 
+	step.classList.add('playing');
     if (config.duration > 0 && WebMidi.outputs[output]) {
         WebMidi.outputs[output].channels[channel].playNote(config.note);
         if (config.duration < 100) {
@@ -184,26 +185,66 @@ function playStep(track) {
 
 function nextStep(track) 
 {
-    let step;
-    let currentStep = track.querySelector('.step.playing');
-    if (currentStep) {
-        if (hasClass(currentStep.nextElementSibling,'step')) {
-            step = currentStep.nextElementSibling;
-        } else {
-            let pattern = currentStep.closest('.pattern');
-            if (hasClass(pattern.nextElementSibling, 'pattern')) {
-                step = pattern.nextElementSibling.querySelector('.step');
-            }
-        }
-        currentStep.classList.remove('playing');
-    }
-    if (!step || !hasClass(step, 'step')) {
-        step = track.querySelector('.step'); 
-    }
-    step.classList.add('playing');
-    return step;
+	let currentStep = track.querySelector('.step.playing');
+	if (!currentStep) {
+		currentStep = track.querySelector('.step');
+		return currentStep;
+	}
+	currentStep.classList.remove('playing');
+    let nextStep, pattern;
+	while (nextStep = currentStep.nextElementSibling) {
+		if (hasClass(nextStep,'step') && isActive(nextStep)) {
+			return nextStep;
+		}
+		currentStep = nextStep;
+	}
+	while (pattern = nextPattern(track, currentStep)) {
+		nextStep = patternNextStep(pattern);
+		if (nextStep) {
+			return nextStep;
+		}
+	}
+	return track.querySelector('.step');
 }
 
+function nextPattern(track, step)
+{
+	let pattern, currentPattern = step.closest('.pattern');
+	while (pattern = currentPattern.nextElementSibling) {
+		if (hasClass(pattern, 'pattern') && isActive(pattern)) {
+			return pattern;
+		} else {
+			currentPattern = pattern;
+		}
+	}
+	let patterns = track.querySelectorAll('.pattern')
+	for (var i = 0; i < patterns.length; i++) {
+		if (isActive(patterns[i])) {
+			return patterns[i];
+		}
+	}
+	return patterns[0];
+}
+
+
+function patternNextStep(pattern) {
+	steps = pattern.querySelectorAll('.step');
+	for (var i = 0; i < steps.length; i++) {
+		if (isActive(steps[i])) {
+			return steps[i];
+		}
+	}
+}
+
+
+function isActive(element)
+{
+	let active = element.querySelector('input[name="active"]');
+	if (active && active.checked) {
+		return true;
+	} 
+	return false;
+}
 
 function getStepConfig(step)
 {
@@ -535,9 +576,17 @@ function getState(parent)
 function getConfigState(container)
 {
     let config = {};
-    container.querySelector('.config').querySelectorAll('input, select').forEach(
+    container.querySelector(':scope > .config').querySelectorAll('input, select').forEach(
         (elm) => { 
-            config[elm.getAttribute('name')] = elm.value;
+			if (elm.getAttribute('type') == 'checkbox') {
+				if (elm.checked) {
+					config[elm.getAttribute('name')] = elm.value;
+				} else {
+					config[elm.getAttribute('name')] = 0;
+				}
+			} else {
+				config[elm.getAttribute('name')] = elm.value;
+			}
         }
     );
     return config;
@@ -571,10 +620,10 @@ function setChildrenState(children, state, archetype)
 function setConfigState(container, config)
 {
     for (var name in config) {
-        let elm = container.querySelector(`.config [name="${name}"]`);
-        if (elm.getAttribute('type') == 'checkobox') {
+        let elm = container.querySelector(`:scope > .config [name="${name}"]`);
+        if (elm.getAttribute('type') == 'checkbox') {
             if (elm.value == config[name]) {
-                elm.checked = 'checked';
+                elm.checked = true;
             } else {
                 elm.checked = false;
             }

@@ -262,6 +262,7 @@ li.track::before {
     align-items: center;
     align-content: stretch;
     border-left: 2px solid var(--foreground);
+	order: 3;
 }
 
 .pattern > .functions button {
