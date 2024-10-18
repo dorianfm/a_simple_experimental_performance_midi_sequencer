@@ -1,4 +1,4 @@
-# A Simple Experimental Performance Midi Sequencer
+# A Simple? Experimental Performance (MIDI) Sequencer
 
 This is inspired by sequencing in [Eurorack](https://en.wikipedia.org/wiki/Eurorack), and my fondness of the [Becafaco Muxlicer](https://www.befaco.org/muxlicer-2/) for creating quick and simple sequences. I wanted to create something which was similar, but allowed for more complexity of both rhythm and experssion, as well as beign quite playable in it's own right, and being able to add complexity in the length of sequnces, as well as being easily playable and adaptable in real time. 
 
