@@ -79,6 +79,7 @@ You can save the file to a local JSON file. And load it back in. If you want the
 * The note range could maybe be configured as most synths don't support the full 127 notes range
 * Would like to have some modifier tracks, but that maybe starts to move away from the simplicity factor.
 * Maybe look at a way of synchronsing tracks somehow
+* Locks up if all notes in a track are disabled
 
 ## Credits
 
