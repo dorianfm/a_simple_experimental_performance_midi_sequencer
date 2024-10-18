@@ -53,7 +53,7 @@ function projectInit()
     changeState(getStateOffset());
     updateStateButtons();
     WebMidi.enable().then(midiEnabled).catch(err => console.log(err));
-    WebMidi.addListener('portschanged', midiAssignOutputs);
+    WebMidi.addListener('portschanged', function() { midiAssignOutputs(project); });
 }
 
 function projectChange()
@@ -299,8 +299,10 @@ function controlNew()
 {
     states = [];
     project.querySelectorAll('.track').forEach((elm) => { elm.remove(); });
+	let track = archetypes.track.cloneNode(true);
+	setupElement(track);
     tracks.appendChild(archetypes.track.cloneNode(true));
-    midiAssignOutputs();
+    midiAssignOutputs(project);
     window.localStorage.setItem('stateOffset', 0);
     updateState();
     updateStateButtons();
@@ -510,13 +512,14 @@ function trackButtonClick(action, button, evt)
 {
     evt.preventDefault();
     let target = button.closest('.step, .pattern, .track');
-    let newElement = evt.getModifierState(dragModifierKey) == true ? target : archetypeFor(target); 
     switch(action) {
         case 'remove':
             remove(target);
             break;
         case 'insert':
-            if (evt.getModifierState('Shift')) {
+			let newElement = evt.getModifierState(dragModifierKey) == true ? target : archetypeFor(target); 
+            setupElement(newElement);
+			if (evt.getModifierState('Shift')) {
                 insertBefore(target, newElement);
             } else {
                 insertAfter(target, newElement);
@@ -528,16 +531,41 @@ function trackButtonClick(action, button, evt)
 
 function archetypeFor(target) {
     if (!target) { return };
-    if (target.matches('.step')) return archetypes['step'];
-    if (target.matches('.pattern')) return archetypes['pattern']; 
-    if (target.matches('.track')) return archetypes['track'];
+	let type = elementType(target)
+	if (type && archetypes[type]) {
+		return archetypes[type].cloneNode(true);
+	}
+}
+
+function setupElement(element)
+{
+	let type = elementType(element);
+	if (type == 'track') {
+		setupTrack(element);
+	} else if (type == 'pattern') {
+
+	} else if (type == 'step') {
+
+	}
+}
+
+function setupTrack(track)
+{
+	midiAssignOutputs(track);
+}
+
+function elementType(target) {
+    if (!target) { return };
+    if (target.matches('.step')) return 'step';
+    if (target.matches('.pattern')) return 'pattern'; 
+    if (target.matches('.track')) return 'track';
 }
 
 function elementClass(target) {
-    if (!target) { return };
-    if (target.matches('.step')) return '.step';
-    if (target.matches('.pattern')) return '.pattern'; 
-    if (target.matches('.track')) return '.track';
+	let type = elementType(target);
+	if (type) {
+		return '.'+type;
+	}
 }
 
 function remove(target)
@@ -704,12 +732,12 @@ function keyup(evt)
 
 function midiEnabled()
 {
-    midiAssignOutputs();
+    midiAssignOutputs(project);
 }
 
-function midiAssignOutputs()
+function midiAssignOutputs(element)
 {
-    document.querySelectorAll('select[name="output"]').forEach((elm) => {
+    element.querySelectorAll('select[name="output"]').forEach((elm) => {
         WebMidi.outputs.forEach((device,idx) => {
             let option = elm.querySelector('option[value="'+idx+'"]');
             if (!option) {
