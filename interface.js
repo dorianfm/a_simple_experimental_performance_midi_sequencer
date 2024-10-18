@@ -15,6 +15,8 @@ let archetypes = {
 
 let states = [];
 
+var mdconverter = new showdown.Converter();
+
 let dragSource, dragElement, dragModifierKey;
 
 if (navigator.userAgent.includes('Mac')) {
@@ -108,6 +110,13 @@ function controlButtonClick(action)
             break;
         case 'new':
             controlNew();
+			break;
+		case 'information':
+			controlInformation();
+			break;
+		case 'settings':
+			controlSettings();
+			break;
     
     }
 }
@@ -295,6 +304,45 @@ function controlNew()
     window.localStorage.setItem('stateOffset', 0);
     updateState();
     updateStateButtons();
+}
+
+function controlInformation()
+{
+	let overlay = document.querySelector('#information');
+	if (!overlay.classList.contains('visible')) {
+		hideOverlays();
+		fetch('./README.md').then(response => response.text()).then(data => {
+			let body = overlay.querySelector('.body');
+			body.innerHTML = mdconverter.makeHtml(data);
+		});
+		showOverlay(overlay);
+	} else {
+		hideOverlays();
+	}
+}
+
+function controlSettings() 
+{
+	let overlay = document.querySelector('#settings');
+	if (!overlay.classList.contains('visible')) {
+		hideOverlays();
+		showOverlay(overlay);
+	} else {
+		hideOverlays();
+	}
+}
+
+function showOverlay(overlay)
+{
+	overlay.classList.add('visible');
+}
+
+function hideOverlays()
+{
+	let overlays = document.querySelectorAll('.overlay.visible');
+	overlays.forEach((overlay) => {
+		overlay.classList.remove('visible');
+	})
 }
 
 function changeState(offset)

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
+    "showdown": "2.1.0",
     "webmidi": "^3.1.11"
   },
   "devDependencies": {

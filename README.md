@@ -1,4 +1,4 @@
-# A Simple? Experimental Performance (MIDI) Sequencer
+# A (Simple?) Experimental Performance (MIDI) Sequencer
 
 This is inspired by sequencing in [Eurorack](https://en.wikipedia.org/wiki/Eurorack), and my fondness of the [Becafaco Muxlicer](https://www.befaco.org/muxlicer-2/) for creating quick and simple sequences. I wanted to create something which was similar, but allowed for more complexity of both rhythm and experssion, as well as beign quite playable in it's own right, and being able to add complexity in the length of sequnces, as well as being easily playable and adaptable in real time. 
 
@@ -39,32 +39,35 @@ There muse be at least one track / one pattern / one step.
 
 You should be able to derive what is a track / pattern / step from the visual hiearchy. If you don't understand it then it's probably not for you.
 
-You can get to that state by clicking 'New'
+You can get to that state by clicking 'New'.
 
-To add a track click the + on the track header. You can also set the track type (currently only note tracks are implemented), the output device (currently midi devices) and channel (1-16)
+To add a track click the `+` on the track header. You can also set the track type (currently only note tracks are implemented), the output device (currently midi devices) and channel (1-16).
 
-To add a pattern click the + on the right of the pattern block
+To add a pattern click the `+` on the right of the pattern block.
 
-To add a step click the + on the right of the step
+To add a step click the `+` on the right of the step.
 
-You can use a modifier key to copy instead of adding. The modifier key is Crtl on Linux/Windows and Option(Alt) on MacOs (in line with how you duplicate when dragging an icon in your window manager...usually)
+New elements are usually added after the item with the `+` icon clicked, but holding down the `shift` key when you click will insert before.
 
-When you have multiple items (eg steps in a pattern) you can change the order by dragging the 'handle' on the left of the step (or pattern). If you hold down the modifier you can duplicate the step or pattern
+To remove a step / pattern click the `-` icon.
 
-You can enable / disable a step or pattern with the checkbox for that pattern / step
+You can use a modifier key to copy instead of adding. The modifier key is `Crtl` on Linux/Windows and `Option/Alt` on MacOs (in line with how you duplicate when dragging an icon in your window manager...usually).
+
+When you have multiple items (eg steps in a pattern) you can change the order by dragging the 'handle' on the left of the step (or pattern). If you hold down the modifier key you can duplicate the step or pattern.
+
+You can enable / disable a step or pattern with the checkbox for that pattern / step.
 
 Once you have a little sequence you can press the play button at the top of the screen to play the sequence. Press again to pause it.
 
-Rewind moves all tracks back to the begining
+Rewind moves all tracks back to the begining.
 
 the `!` button send an all note off (panic) to all midi devices. Though I've not tested this much, it's theoretical at this time.
 
 The number at the top left if the number of milliseconds for the shortest time interval in the sequencer. The step duration is a multiple of this (between 1 and 20). There's no BPM.
 
-There are undo/redo buttons at the top right, at the moment the number of stored states is limited by when the software crashes. The number between the 
+There are undo/redo buttons at the top right, at the moment the number of stored states is limited by when the software crashes. The number between the buttons is how many states have been stored. 
 
-You can save the file to a local JSON file. And load it back in. If you want the JSON file to have a name there is a title field at the middle top fo the screen to name your project. JSON files are always timestamped so you don't need to enter `FINAL version 2 FINAL FINAL
-` in here, just a description project name, and you'll ende up with lots of versioned JSON files as you save. 
+You can save the file to a local JSON file. And load it back in. If you want the JSON file to have a name there is a title field at the middle top fo the screen to name your project. JSON files are always timestamped so you don't need to enter `FINAL version 2 FINAL FINAL` in here, just a description project name, and you'll ende up with lots of versioned JSON files as you save. 
 
 ## Known issues / Thoughts
 
@@ -77,3 +80,6 @@ You can save the file to a local JSON file. And load it back in. If you want the
 * Would like to have some modifier tracks, but that maybe starts to move away from the simplicity factor.
 * Maybe look at a way of synchronsing tracks somehow
 
+## Credits
+
+Developed by [Dorian Fraser-Moore](https://dorian.fraser-moore.com) / [Onymous](https://onymous.in) @ [The Useful Arts](https://theusefularts.org)

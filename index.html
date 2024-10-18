@@ -7,6 +7,7 @@
     <title>Sequencer</title>
     <link rel="stylesheet" href="./css/sequencer.css">
     <script src="node_modules/webmidi/dist/iife/webmidi.iife.js"></script>
+	<script src="node_modules/showdown/dist/showdown.min.js"></script>
 </head>
 <body>
 <form id="project" class="project" data-children="tracks" data-child="track">
@@ -31,8 +32,18 @@
             <input name="stateOffset" width="4" disabled="true">
             <button title="Redo" value="redo" class="icon">&#x21BA;</button>
             <button title="settings" value="settings">&#x2699;</button>
+			<button title="Information" value="information">&#x1F6C8;</button>
+
         </div>
     </div>
+	<div id="settings" class="settings overlay config">
+		<div class="body">
+			<h2>Settings</h2>
+		</div>	
+	</div>
+	<div id="information" class="information overlay">
+		<div class="body"></div>
+	</div>
     <ol class="components tracks" id="tracks">
         <li class="component track" data-children="patterns" data-child="pattern">
             <div class="header config">

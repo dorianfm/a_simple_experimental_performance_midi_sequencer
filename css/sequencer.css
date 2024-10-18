@@ -115,6 +115,7 @@ input[type="checkbox"] {
     -webkit-transform: scaleX(-1) scaleY(-1);
     -o-transform: scaleX(-1) scaleY(-1);
     transform: scaleX(-1) scaleY(-1);
+	font-size: 1.45rem;
 }
 
 .controls button[value="redo"] {
@@ -123,6 +124,15 @@ input[type="checkbox"] {
     -webkit-transform: scaleY(-1);
     -o-transform: scaleY(-1);
     transform: scaleY(-1);
+	font-size: 1.45rem;
+}
+
+.controls button[value="settings"] {
+	font-size: 1.5rem;
+}
+
+.controls button[value="information"] {
+	font-size: 1.3rem;
 }
 
 .controls input[name="stateOffset"] {
@@ -373,4 +383,37 @@ li.track::before {
 
 .hidden {
     display: none;
+}
+
+.overlay {
+	position: fixed;
+	top: 3rem;
+	padding: 1rem;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+	z-index: 5;
+	background: var(--background);
+	display: none;
+}
+
+.overlay.visible {
+	display: block;
+}
+
+.overlay .body {
+	max-width: 40rem;
+	margin: 0 auto;
+	line-height: 1.4;
+}
+
+code {
+	background-color: lightgrey;
+	padding: 0.1rem 0.25rem;
+}
+
+pre code {
+	padding: 0.25rem 0.5rem;
+	display: block;
 }
