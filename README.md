@@ -76,10 +76,11 @@ You can save the file to a local JSON file. And load it back in. If you want the
 * Not enough keyboard control 
 * When you add a track the outputs are not set up
 * Timing can be wonky, this is kind of intentional, but I could maybe make it more accurate.
-* The note range could maybe be configured as most synths don't support the full 127 notes range
+* The note range could maybe be configured as most synths don't support the full 127 notes range -per track or per project?
 * Would like to have some modifier tracks, but that maybe starts to move away from the simplicity factor.
 * Maybe look at a way of synchronsing tracks somehow
 * Locks up if all notes in a track are disabled
+* Panic is not working (thought it should be...)
 
 ## Credits
 

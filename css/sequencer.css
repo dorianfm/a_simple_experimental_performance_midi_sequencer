@@ -9,18 +9,26 @@
    
 
 :root {
-    --foreground: black;
-    --background: white;
+    --foreground: #111111;
+    --background: #eeeeee;
+	
     --accent: grey;
     --focus: magenta;
 }
 
+@media (prefers-color-scheme: dark) {
+	:root {
+		--foreground: #eeeeee;
+		--background: #111111;
+	}
+}
+
 body {
+	background: var(--background);
     margin: 0;
     padding: 0;
     font-family: helvetica, sans-serif;
     font-size: 10pt;
-    background: var(--backround);
     color: var(--foreground);
     accent-color: var(--accent);
     padding-top: calc(3rem + 1px);
