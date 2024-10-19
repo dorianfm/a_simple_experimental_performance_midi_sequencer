@@ -6,12 +6,30 @@
     font-family: "Noto Emoji";
     src: url('../fonts/NotoEmoji-VariableFont_wght.ttf')  format('truetype');
 }
+
+@font-face {
+    font-family: "Fredoka";
+    src: url('../fonts/Fredoka-Light.ttf')  format('truetype');
+	font-weight: 300;
+}
    
+@font-face {
+    font-family: "Fredoka";
+    src: url('../fonts/Fredoka-Medium.ttf')  format('truetype');
+	font-weight: 400;
+}
+
+@font-face {
+    font-family: "Fredoka";
+    src: url('../fonts/Fredoka-Bold.ttf')  format('truetype');
+	font-weight: 500;
+}  
+
+
 
 :root {
     --foreground: #111111;
     --background: #eeeeee;
-	
     --accent: grey;
     --focus: magenta;
 }
@@ -27,8 +45,8 @@ body {
 	background: var(--background);
     margin: 0;
     padding: 0;
-    font-family: helvetica, sans-serif;
-    font-size: 10pt;
+    font-family: "Fredoka", helvetica, sans-serif;
+    font-size: 1rem;
     color: var(--foreground);
     accent-color: var(--accent);
     padding-top: calc(3rem + 1px);
@@ -36,6 +54,11 @@ body {
     min-width: 100svw;
     display: flex;
 }
+
+* {
+	font-size: 1rem;
+}
+
 
 button,
 input,
@@ -46,11 +69,10 @@ textarea {
     border: 1px solid var(--foreground);
     color: var(--foreground);
     background: none;
-    height: 1.25rem;
+	font-family: "Fredoka", helvetica, sans-serif;
 }
 
 button {
-    font-size: 120%;
     line-height: 1rem;
 }
 
@@ -219,6 +241,10 @@ input[type="checkbox"] {
     width: 5rem;
 }
 
+.track .header select[name="channel"] {
+	width: 2.5rem;
+}
+
 li.track {
     counter-increment: list;
     position: relative;
@@ -266,7 +292,6 @@ li.track::before {
 .pattern + .pattern {
     margin-top: -2px;
 }
-
 
 .pattern > .functions {
     display: flex;
