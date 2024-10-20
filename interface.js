@@ -697,6 +697,9 @@ function setConfigState(container, config)
 {
     for (var name in config) {
         let elm = container.querySelector(`:not(.components) .config [name="${name}"]`);
+		if (!elm) {
+			continue;	
+		}
         if (elm.getAttribute('type') == 'checkbox') {
             if (elm.value == config[name]) {
                 elm.checked = true;
