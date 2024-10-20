@@ -67,7 +67,7 @@ The number at the top left if the number of milliseconds for the shortest time i
 
 There are undo/redo buttons at the top right, at the moment the number of stored states is limited by when the software crashes. The number between the buttons is how many states have been stored. 
 
-You can save the file to a local JSON file. And load it back in. If you want the JSON file to have a name there is a title field at the middle top fo the screen to name your project. JSON files are always timestamped so you don't need to enter `FINAL version 2 FINAL FINAL` in here, just a description project name, and you'll ende up with lots of versioned JSON files as you save. 
+You can save the file to a local JSON file. And load it back in. If you want the JSON file to have a name there is a title field at the middle top fo the screen to name your project. When you save a project it will download a file with the project name appended with a timestamp. 
 
 ## Known issues / Thoughts
 
