@@ -175,15 +175,21 @@ function playStep(track) {
     let interval = controls.querySelector('[name="interval"]').value;
     let output = track.querySelector('.config select[name="output"]').value;
     let channel = track.querySelector('.config select[name="channel"]').value;
+	let [sign, multiplier] = track.querySelector('.config select[name="multiplier"]').value.split(' ');
 
-    let step = nextStep(track);
+	let step = nextStep(track);
     let config = getStepConfig(step);
     let stepInterval = config.length * interval;
+	if (sign == '/') {
+		stepInterval = stepInterval * multiplier;
+	} else if (sign == '×') {
+		stepInterval = stepInterval / multiplier;
+	} 
 
 	step.classList.add('playing');
-    if (config.duration > 0 && WebMidi.outputs[output]) {
-        WebMidi.outputs[output].channels[channel].playNote(config.note);
-        if (config.duration < 100) {
+    if (config.trigger && WebMidi.outputs[output]) {
+		WebMidi.outputs[output].channels[channel].playNote(config.note);
+        if (config.duration > 0) {
             WebMidi.outputs[output].channels[channel].stopNote(config.note, {time: "+"+(stepInterval * (config.duration/100)) });
         }
     }
@@ -260,6 +266,7 @@ function getStepConfig(step)
     return {
         note: step.querySelector('[name="note"]').value,
         duration: step.querySelector('[name="duration"]').value,
+		trigger: step.querySelector('[name="trigger"]').value,
         length: step.querySelector('[name="length"]').value,
         active: step.querySelector('[name="active"]').value,
     }
