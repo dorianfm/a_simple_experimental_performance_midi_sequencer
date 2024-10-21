@@ -16,8 +16,9 @@
 @font-face {
     font-family: "Fredoka";
     src: url('../fonts/Fredoka-Medium.ttf')  format('truetype');
-	font-weight: 500;
+	font-weight: 600;
 }
+
 
 :root {
     --foreground: #111111;
