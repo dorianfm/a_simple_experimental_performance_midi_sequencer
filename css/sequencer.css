@@ -434,6 +434,10 @@ li.track::before {
 	line-height: 1.4;
 }
 
+.overlay .body > :first-child {
+	margin-top: 0;
+}
+
 code {
 	background-color: lightgrey;
 	padding: 0.1rem 0.25rem;
