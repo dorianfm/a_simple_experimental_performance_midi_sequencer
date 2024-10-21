@@ -726,11 +726,91 @@ function trimNodes(nodes, length)
 function keydown(evt)
 {
 
+	// determine focused element
+	let element = document.activeElement;
+	if (hasClass(element, 'handle')) {
+		keydownHandle(element, evt);
+	} else {
+		console.log(element.nodeType);
+	}
+	
+
+}
+
+function keydownHandle(element, evt)
+{
+	container = element.closest('.step, .pattern');
+	if (container) {
+		if (evt.code == 'ArrowUp') {
+			moveUp(container, evt.getModifierState(dragModifierKey));
+		} else if (evt.code == 'ArrowDown') {
+			moveDown(container, evt.getModifierState(dragModifierKey));
+		} else if (evt.code == 'Backspace') {
+			container.remove();
+			updateState();
+		} else {
+			console.log(evt.code);
+		}
+	}
+}	
+
+function moveUp(element, copy)
+{
+	let previous = element.previousElementSibling;
+	if (copy) {
+		let newElement = element.cloneNode(true);
+		element.before(newElement);
+		newElement.querySelector('.handle').focus();
+	} else if (previous && hasClass(previous, elementType(previous))) {
+		element.parentNode.removeChild(element);
+		previous.before(element);
+		element.querySelector('.handle').focus();
+	} else {
+		let pattern = element.closest('.pattern');
+		let previousPattern = pattern.previousElementSibling;
+		if (previousPattern) {
+			let previousStep = previousPattern.querySelector('.step:last-of-type');
+			if (!previousStep) {
+				return;
+			}
+			element.parentNode.removeChild(element);
+			previousStep.after(element);
+			element.querySelector('.handle').focus();
+		}
+	}
+	updateState();
+
+}
+
+function moveDown(element, copy) 
+{
+	let next = element.nextElementSibling;
+	if (copy) {
+		let newElement = element.cloneNode(true);
+		element.after(newElement);
+		newElement.querySelector('.handle').focus();
+	} else if (next && hasClass(next, elementType(next))) {
+		element.parentNode.removeChild(element);
+		next.after(element);
+		element.querySelector('.handle').focus();
+	} else {
+		let pattern = element.closest('.pattern');
+		let nextPattern = pattern.nextElementSibling;
+		if (nextPattern) {
+			let nextStep = nextPattern.querySelector('.step:first-of-type');
+			if (!nextStep) {
+				return;
+			}
+			element.parentNode.removeChild(element);
+			nextStep.before(element);
+			element.querySelector('.handle').focus();
+		}
+	}
+	updateState();
 }
 
 function keyup(evt)
 {
-
 }
 
 function midiEnabled()
