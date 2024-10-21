@@ -729,15 +729,21 @@ function keydown(evt)
 	// determine focused element
 	let element = document.activeElement;
 	if (hasClass(element, 'handle')) {
-		keydownHandle(element, evt);
-	} else {
-		console.log(element.nodeType);
+		keydownOnHandle(element, evt);
+	} else if (element.nodeName !== 'INPUT' && element.nodeName != 'SELECT' && element.nodeName !== 'BUTTON') {
+		if (evt.code == 'Space') {
+			controlTogglePlay();
+		} else if (evt.code == 'Backspace') {
+			controlRewind();
+		} else {
+			console.log(evt.code, element.nodeName);
+		}
 	}
 	
 
 }
 
-function keydownHandle(element, evt)
+function keydownOnHandle(element, evt)
 {
 	container = element.closest('.step, .pattern');
 	if (container) {
