@@ -356,10 +356,11 @@ function hideOverlays()
 
 function changeState(offset)
 {
-    if (states[offset]) {
-        setState(project, states[offset]);
-        window.localStorage.setItem('stateOffset', offset);
-    } 
+    if (!states[offset]) {
+        offset = 0;
+    }
+    setState(project, states[offset]);
+    window.localStorage.setItem('stateOffset', offset);
     controls.querySelector('[name="stateOffset"]').value = (states.length - offset);
     updateStateButtons();
 }
