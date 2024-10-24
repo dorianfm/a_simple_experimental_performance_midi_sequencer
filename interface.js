@@ -176,31 +176,36 @@ function playStep(track) {
     let output = track.querySelector('.config select[name="output"]').value;
     let channel = track.querySelector('.config select[name="channel"]').value;
 	let [sign, multiplier] = track.querySelector('.config select[name="multiplier"]').value.split(' ');
+	let stepInterval = interval;
 
 	let step = nextStep(track);
-    let config = getStepConfig(step);
-    let stepInterval = config.length * interval;
-	if (sign == '/') {
-		stepInterval = stepInterval * multiplier;
-	} else if (sign == '×') {
-		stepInterval = stepInterval / multiplier;
+	if (isActive(track) && step) {
+		let config = getStepConfig(step);
+		let pattern = step.closest('.pattern');
+		if (config.active && isActive(pattern)) {
+			stepInterval = config.length * interval;
+			if (sign == '/') {
+				stepInterval = stepInterval * multiplier;
+			} else if (sign == '×') {
+				stepInterval = stepInterval / multiplier;
+			} 
+
+			step.classList.add('playing');
+			if (config.trigger && WebMidi.outputs[output]) {
+				WebMidi.outputs[output].channels[channel].playNote(config.note);
+				if (config.duration > 0) {
+					WebMidi.outputs[output].channels[channel].stopNote(config.note, {time: "+"+(stepInterval * (config.duration/100)) });
+				}
+			}
+			track.lastStep = step;
+		} 
 	} 
-
-	step.classList.add('playing');
-    if (config.trigger && WebMidi.outputs[output]) {
-		WebMidi.outputs[output].channels[channel].playNote(config.note);
-        if (config.duration > 0) {
-            WebMidi.outputs[output].channels[channel].stopNote(config.note, {time: "+"+(stepInterval * (config.duration/100)) });
-        }
-    }
-
-    track.dataset.lastStep = step;
     track.dataset.stepTimeout = setTimeout(() => { playStep(track); }, stepInterval);
 }
 
 function nextStep(track) 
 {
-	let currentStep = track.querySelector('.step.playing');
+	let currentStep = track.querySelector('.step.playing') ?? track.lastStep;
 	if (!currentStep) {
 		currentStep = track.querySelector('.step');
 		return currentStep;
@@ -213,13 +218,17 @@ function nextStep(track)
 		}
 		currentStep = nextStep;
 	}
+	let currentPattern = currentStep.closest('.pattern');
 	while (pattern = nextPattern(track, currentStep)) {
 		nextStep = patternNextStep(pattern);
 		if (nextStep) {
 			return nextStep;
 		}
+		if (pattern == currentPattern) {
+			return;
+		}
 	}
-	return track.querySelector('.step');
+	return;
 }
 
 function nextPattern(track, step)
@@ -266,9 +275,9 @@ function getStepConfig(step)
     return {
         note: step.querySelector('[name="note"]').value,
         duration: step.querySelector('[name="duration"]').value,
-		trigger: step.querySelector('[name="trigger"]').value,
+		trigger: step.querySelector('[name="trigger"]').checked,
         length: step.querySelector('[name="length"]').value,
-        active: step.querySelector('[name="active"]').value,
+        active: step.querySelector('[name="active"]').checked,
     }
 }
 
