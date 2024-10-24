@@ -89,4 +89,4 @@ Availalbe on github at [https://github.com/dorianfm/a_simple_experimental_perfor
 
 ## Credits
 
-Developed by [Dorian Fraser-Moore](https://dorian.fraser-moore.com) / [Onymous](https://onymous.in) @ [The Useful Arts](https://theusefularts.org)
+Developed by [dorian fraser-moore](https://dorian.fraser-moore.com) / [onymous](https://onymous.in) @ [the useful arts](https://theusefularts.org)
