@@ -173,6 +173,10 @@ function rewindTrack(track) {
 function playStep(track) {
     
     let interval = controls.querySelector('[name="interval"]').value;
+	if (interval < 10) {
+		interval = 10;
+		controls.querySelector('[name="interval"]').value = 10;
+	}
     let output = track.querySelector('.config select[name="output"]').value;
     let channel = track.querySelector('.config select[name="channel"]').value;
 	let [sign, multiplier] = track.querySelector('.config select[name="multiplier"]').value.split(' ');
