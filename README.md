@@ -83,6 +83,10 @@ You can save the file to a local JSON file. And load it back in. If you want the
 * Panic is not working (thought it should be...) this might be down to timeouts not being cleared properly
 * Tracks added when playing don't play
 
+## Source Code
+
+Availalbe on github at [https://github.com/dorianfm/a_simple_experimental_performance_midi_sequencer](https://github.com/dorianfm/a_simple_experimental_performance_midi_sequencer)
+
 ## Credits
 
-Developed by [Dorian Fraser-Moore](https://dorian.fraser-moore.com) / [Onymous](https://onymous.in) @ [The Useful Arts](https://theusefularts.org)
+Developed by [dorian fraser-moore](https://dorian.fraser-moore.com) / [onymous](https://onymous.in) @ [the useful arts](https://theusefularts.org)
