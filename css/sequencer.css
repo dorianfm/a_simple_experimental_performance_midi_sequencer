@@ -180,6 +180,37 @@ input[type="checkbox"] {
     display: inline-block;
 }
 
+.hidden {
+    display: none;
+}
+
+.overlay {
+	position: fixed;
+	top: 3rem;
+	padding: 1rem;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+	z-index: 5;
+	background: var(--background);
+	display: none;
+}
+
+.overlay.visible {
+	display: block;
+}
+
+.overlay .body {
+	max-width: 40rem;
+	margin: 0 auto;
+	line-height: 1.4;
+}
+
+.overlay .body > :first-child {
+	margin-top: 0;
+}
+
 
 .tracks {
     display: flex;
@@ -416,37 +447,6 @@ li.track::before {
 
 .dragTargetBelow {
     margin-bottom: 2rem;
-}
-
-.hidden {
-    display: none;
-}
-
-.overlay {
-	position: fixed;
-	top: 3rem;
-	padding: 1rem;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	overflow: auto;
-	z-index: 5;
-	background: var(--background);
-	display: none;
-}
-
-.overlay.visible {
-	display: block;
-}
-
-.overlay .body {
-	max-width: 40rem;
-	margin: 0 auto;
-	line-height: 1.4;
-}
-
-.overlay .body > :first-child {
-	margin-top: 0;
 }
 
 code {
