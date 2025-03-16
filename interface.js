@@ -187,7 +187,7 @@ function playStep(track) {
 		let config = getStepConfig(step);
 		let pattern = step.closest('.pattern');
 		if (config.active && isActive(pattern)) {
-			stepInterval = config.length * interval;
+			stepInterval = config.duration * interval;
 			if (sign == '/') {
 				stepInterval = stepInterval * multiplier;
 			} else if (sign == '×') {
@@ -197,8 +197,8 @@ function playStep(track) {
 			step.classList.add('playing');
 			if (config.trigger && WebMidi.outputs[output]) {
 				WebMidi.outputs[output].channels[channel].playNote(config.note);
-				if (config.duration > 0) {
-					WebMidi.outputs[output].channels[channel].stopNote(config.note, {time: "+"+(stepInterval * (config.duration/100)) });
+				if (config.gate_length > 0) {
+					WebMidi.outputs[output].channels[channel].stopNote(config.note, {time: "+"+(stepInterval * (config.gate_length/100)) });
 				}
 			}
 			track.lastStep = step;
@@ -280,7 +280,7 @@ function getStepConfig(step)
         note: step.querySelector('[name="note"]').value,
         duration: step.querySelector('[name="duration"]').value,
 		trigger: step.querySelector('[name="trigger"]').checked,
-        length: step.querySelector('[name="length"]').value,
+        gate_length: step.querySelector('[name="gate_length"]').value,
         active: step.querySelector('[name="active"]').checked,
     }
 }

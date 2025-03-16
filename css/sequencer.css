@@ -340,13 +340,20 @@ li.track::before {
     width: 1.5rem;
 }
 
-.step input[name="active"]:not(:checked) ~ * {
+.step input[name="active"]:not(:checked) ~ *,
+.step input[name="trigger"]:not(:checked) ~ * {
 	opacity: 0.25;
 }
 
 .step input[type="range"] {
     width: 8rem;
 } 
+
+.step input[name="note"] {
+	width: 200%;
+}
+
+
 
 .pattern .handle {
     background: url('../img/ht-50.gif');
