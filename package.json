@@ -1,10 +1,11 @@
 {
-  "name": "midisequencer",
+  "name": "a_simple_experimental_performance_midi_sequencer",
   "version": "1.0.0",
-  "description": "Midi sequencer ",
+  "description": "A (Simple?) Experimental Performance (MIDI) Sequencer",
   "main": "main.js",
   "author": "dorian fraser-moore",
   "license": "ISC",
+  "homepage": "https://github.com/dorianfm/a_simple_experimental_performance_midi_sequencer",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
