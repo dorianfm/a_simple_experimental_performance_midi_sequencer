@@ -235,6 +235,7 @@ input[type="checkbox"] {
 
 .controls button[value="settings"] {
 	font-size: 1.5rem;
+	display: none;
 }
 
 .controls button[value="information"] {
@@ -247,6 +248,7 @@ input[type="checkbox"] {
     padding: 0;
     border-color: var(--background);
 }
+
 
 .project .controls button[value="pause"]
 {
