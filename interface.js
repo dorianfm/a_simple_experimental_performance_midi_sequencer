@@ -212,9 +212,9 @@ function playStep(track) {
 
 function nextStep(track) 
 {
-	let currentStep = track.querySelector('.step.playing') ?? track.lastStep;
+	let currentStep = track.querySelector('.step.playing'); // ?? track.lastStep;
 	if (!currentStep) {
-		currentStep = track.querySelector('.step');
+		currentStep = track.querySelectorAll('.step')[0];
 		return currentStep;
 	}
 	currentStep.classList.remove('playing');
