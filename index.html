@@ -46,8 +46,8 @@
         <li class="component track" data-children="patterns" data-child="pattern">
             <div class="header config">
                 <div class="options">
-					<input type="checkbox" name="active" value="1" checked="checked" />
-					<select name="multiplier">
+					<input type="checkbox" name="active" value="1" checked="checked" title="Track Active" />
+					<select name="multiplier" title="Clock Divider">
 						<option>/ 10</option>
 						<option>/ 9</option>
 						<option>/ 8</option>
@@ -72,10 +72,10 @@
 						<option value="pitchbend">Pitch Bend</option>
 						<option value="generator">Generator</option>
 					</select>-->
-                    <select name="output" class="ouput">
-                        <option>Output</option>
+                    <select name="output" class="ouput" title="MIDI Device">
+                        <option>Device</option>
                     </select>
-                    <select name="channel" classs="channel">
+                    <select name="channel" classs="channel" title="MIDI Channel">
                         <option disabled="disabled">Channel</option>
                         <option selected="selected">1</option>
                         <option>2</option>
@@ -94,7 +94,7 @@
                         <option>15</option>
                         <option>16</option>
                     </select>
-                    <select name="node_modules">
+                    <select name="key">
                         <option disabled="disabled" value="">Scale</option>
                         <option selected>None</option>
                         <option>Ionian</option>
@@ -159,7 +159,7 @@
                        
                     </div>
 					<div class="config">
-						<input type="checkbox" name="active" value="1" checked="checked" />
+						<input type="checkbox" name="active" value="1" checked="checked" title="Pattern Active">
 					</div>
                     <ul class="components steps">
                         <li class="component step drag-item">
@@ -167,21 +167,21 @@
                             
                             </div>
                             <div class="config">
-                                <input type="checkbox" title="Active" name="active" value="1" checked="checked" />
-                                <input type="range" title="Duration" name="duration" min="1 " max="20" value="10" list="duration"/>
-								<input type="checkbox" title="Trigger" name="trigger" value="1" checked="checked" />
-                                <input type="range" title="Gate Length" name="gate_length" min="1" max="100" value="50" list="gate_lengths" />
-                                <input type="range" title="Note" name="note" min="0" max="127" value="60" list="notes"/>
+                                <input type="checkbox" title="Step Active" name="active" value="1" checked="checked">
+                                <input type="range" title="Duration" name="duration" min="1 " max="20" value="10" list="duration">
+								<input type="checkbox" title="Trigger" name="trigger" value="1" checked="checked">
+                                <input type="range" title="Gate Length" name="gate_length" min="1" max="100" value="50" list="gate_lengths">
+                                <input type="range" title="Note" name="note" min="0" max="127" value="60" list="notes">
                             </div>
                             <div class="functions">
-                                <button title="remove" value="remove">-</button>
-                                <button title="insert" value="insert">+</button>
+                                <button title="remove step" value="remove">-</button>
+                                <button title="insert step" value="insert">+</button>
                             </div>
                         </li>
                     </ul>
 					<div class="functions">
-						<button title="remove" value="remove">-</button>
-						<button title="insert" value="insert">+</button>         
+						<button title="remove pattern" value="remove">-</button>
+						<button title="insert patern" value="insert">+</button>         
 					</div>
                 </li>
             </ol>

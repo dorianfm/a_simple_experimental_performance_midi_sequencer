@@ -296,6 +296,13 @@ input[type="checkbox"] {
 	margin-top: 0;
 }
 
+.track > .config select[name="key"],
+.track > .config select[name="root"],
+.track > .config select[name="octave"],
+.track > .config select[name="range"] {
+	display: none;
+}
+
 
 .tracks {
     display: flex;
