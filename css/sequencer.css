@@ -503,9 +503,6 @@ li.track::before {
 	display: inline-block;
 	text-align: right;
 	border: 0;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
 	background: inherit;
 	font: inherit;
 }
