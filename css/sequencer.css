@@ -463,6 +463,14 @@ li.track::before {
     width: 1.5rem;
 }
 
+.track .config:has(input[name="active"]:not(:checked)) + .patterns .pattern > * {
+	opacity: 0.25;
+}
+
+.pattern > .config:has(input[name="active"]:not(:checked)) ~ * {
+	opacity: 0.25;
+}
+
 .step input[name="active"]:not(:checked) ~ *,
 .step input[name="trigger"]:not(:checked) ~ * {
 	opacity: 0.25;
