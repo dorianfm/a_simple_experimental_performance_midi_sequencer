@@ -33,6 +33,7 @@ document.addEventListener('keyup', keyup);
 
 project.addEventListener('change', projectChange);
 tracks.addEventListener('change', tracksChange);
+tracks.addEventListener('input', tracksChange);
 tracks.addEventListener('mousedown', trackMouseDown);
 tracks.addEventListener('mouseup', trackMouseUp);
 tracks.addEventListener('click', trackClick);

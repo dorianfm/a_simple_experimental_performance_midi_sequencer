@@ -499,6 +499,7 @@ li.track::before {
 .range-value {
 	font-variant-numeric: tabular-nums;
 	width: 6ch;
+	letter-spacing: 0;
 	display: inline-block;
 	text-align: right;
 	border: 0;
