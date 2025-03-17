@@ -32,6 +32,7 @@ document.addEventListener('keydown', keydown);
 document.addEventListener('keyup', keyup);
 
 project.addEventListener('change', projectChange);
+tracks.addEventListener('change', tracksChange);
 tracks.addEventListener('mousedown', trackMouseDown);
 tracks.addEventListener('mouseup', trackMouseUp);
 tracks.addEventListener('click', trackClick);
@@ -52,6 +53,7 @@ function projectInit()
     states = JSON.parse(window.localStorage.getItem('states')) ?? [];
     changeState(getStateOffset());
     updateStateButtons();
+	setRangeValues();
     WebMidi.enable().then(midiEnabled).catch(err => console.log(err));
     WebMidi.addListener('portschanged', function() { midiAssignOutputs(project); });
 }
@@ -425,6 +427,39 @@ function loadData(files) {
     }
     
     fr.readAsText(files.item(0));
+}
+
+function tracksChange(evt)
+{
+	target = evt.originalTarget;
+	if (target.nodeName == 'INPUT') {
+		trackInputChange(target);
+	}
+}
+
+function trackInputChange(target)
+{
+	if (target.getAttribute('type') == 'range') {
+		setRangeValue(target);
+	} else if (target.getAttribute('type') == 'number' && target.classList.contains('range-value')) {
+		setRangeValue(target);
+	}
+}
+
+function setRangeValues()
+{
+	var ranges = tracks.querySelectorAll('input[type="range"]');
+	ranges.forEach( (range) => { setRangeValue(range); });
+}
+
+function setRangeValue(source)
+{
+	if (source.previousElementSibling) {
+		source.previousElementSibling.value = source.value;
+	} 
+	if (source.nextElementSibling) {
+		source.nextElementSibling.value = source.value;
+	}
 }
 
 function trackClick(evt)

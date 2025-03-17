@@ -168,10 +168,21 @@
                             </div>
                             <div class="config">
                                 <input type="checkbox" title="Step Active" name="active" value="1" checked="checked">
-                                <input type="range" title="Duration" name="duration" min="1 " max="20" value="10" list="duration">
-								<input type="checkbox" title="Trigger" name="trigger" value="1" checked="checked">
-                                <input type="range" title="Gate Length" name="gate_length" min="1" max="100" value="50" list="gate_lengths">
-                                <input type="range" title="Note" name="note" min="0" max="127" value="60" list="notes">
+								<div class="field-group">
+									<input type="range" title="Duration" name="duration" min="0" max="20" value="10" list="duration">
+									<input type="number" class="range-value" min="0" max="20" value="10"></input>
+								</div>
+								<div class="field-group">
+									<input type="checkbox" title="Trigger" name="trigger" value="1" checked="checked">
+									<div class="field-group">
+										<input type="range" title="Gate Length" name="gate_length" min="0" max="100" value="50" list="gate_lengths">
+										<input type="number" class="range-value" min="0" max="100" value="50"></input>
+									</div>
+									<div class="field-group">
+										<input type="range" title="Note" name="note" min="0" max="127" value="60" list="notes">
+										<input type="number" class="range-value" min="0" max="127" value="60"></input>
+									</div>
+								</div>
                             </div>
                             <div class="functions">
                                 <button title="remove step" value="remove">-</button>
