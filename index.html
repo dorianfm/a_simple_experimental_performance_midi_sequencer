@@ -14,7 +14,7 @@
     <div id="controls" class="controls config">
         <div class="play">
             <button title="panic" value="panic">!</button>
-            <input type="number" name="interval" min="8" max="1000" step="1" value="25">
+            <input type="number" title="Tick Interval (ms)" name="interval" min="8" max="1000" step="1" value="25">
             <button title="rewind" value="rewind" class="icon">&#8676;</button>
             <button title="play" value="play" class="icon">&#x25B6;</button>
             <button title="pause" value="pause" class="icon">&#x23F8;</button>
@@ -57,7 +57,7 @@
 						<option>/ 4</option>
 						<option>/ 3</option>
 						<option>/ 2</option>
-						<option selected="selected">1</option>
+						<option selected="selected">&times; 1</option>
 						<option>&times; 2</option>
 						<option>&times; 3</option>
 						<option>&times; 4</option>
@@ -169,18 +169,18 @@
                             <div class="config">
                                 <input type="checkbox" title="Step Active" name="active" value="1" checked="checked">
 								<div class="field-group">
-									<input type="range" title="Duration" name="duration" min="0" max="20" value="10" list="duration">
-									<input type="number" class="range-value" min="0" max="20" value="10"></input>
+									<input type="range" title="Duration (number of ticks)" name="duration" min="0" max="20" value="10" list="duration">
+									<input type="number" title="Duration (number of ticks)" class="range-value" min="0" max="20" value="10"></input>
 								</div>
 								<div class="field-group">
 									<input type="checkbox" title="Trigger" name="trigger" value="1" checked="checked">
 									<div class="field-group">
-										<input type="range" title="Gate Length" name="gate_length" min="0" max="100" value="50" list="gate_lengths">
-										<input type="number" class="range-value" min="0" max="100" value="50"></input>
+										<input type="range" title="Gate Length %" name="gate_length" min="0" max="100" value="50" list="gate_lengths">
+										<input type="number" title="Gate Length %" class="range-value" min="0" max="100" value="50"></input>
 									</div>
 									<div class="field-group">
 										<input type="range" title="Note" name="note" min="0" max="127" value="60" list="notes">
-										<input type="number" class="range-value" min="0" max="127" value="60"></input>
+										<input type="number" title="Note" class="range-value" min="0" max="127" value="60"></input>
 									</div>
 								</div>
                             </div>
