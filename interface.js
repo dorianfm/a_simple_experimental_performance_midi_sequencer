@@ -1,4 +1,3 @@
-
 let project = document.querySelector('#project');
 let tracks = project.querySelector('#tracks');
 let controls = project.querySelector('#controls');
@@ -55,8 +54,8 @@ function projectInit()
     changeState(getStateOffset());
     updateStateButtons();
 	setRangeValues();
-    WebMidi.enable().then(midiEnabled).catch(err => console.log(err));
     WebMidi.addListener('portschanged', function() { midiAssignOutputs(project); });
+    WebMidi.enable().then(midiEnabled).catch(err => console.log(err));
 }
 
 function projectChange()
@@ -383,6 +382,7 @@ function changeState(offset)
 
 function controlSave() {
     let state = getState(project);
+	state.stateOffset = 1;
     let title = state.config.title+' '+state.config.updated;
     let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
     var elm = document.createElement('a');
@@ -424,7 +424,9 @@ function loadData(files) {
   
     fr.onload = function(e) { 
         var state = JSON.parse(e.target.result);
+		state.stateOffset = 1;
         setState(project, state);
+		midiAssignOutputs();
     }
     
     fr.readAsText(files.item(0));
@@ -432,7 +434,7 @@ function loadData(files) {
 
 function tracksChange(evt)
 {
-	target = evt.originalTarget;
+	let target = evt.target;
 	if (target.nodeName == 'INPUT') {
 		trackInputChange(target);
 	}
